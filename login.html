@@ -1,61 +1,262 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#home.html">Multi-Bed Browser  </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="upload.html">Upload </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="search.html">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="help.html">help</a>
-            </li>
-          </ul>
-          <form class="form-inline">
-            <button class="btn btn-dark my-2 my-sm-0" onclick="window.location.href = 'login.html';">Login<span class="sr-only">(current)</span></button>
-          </form>
-        </div>
-      </nav>
+    <title>Login - Multi-Bed Browser</title>
     
-    <title>Hello, world!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            padding-right: calc(1.5em + .75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(.375em + .1875rem) center;
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+        }
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+        .divider span {
+            background-color: white;
+            padding: 0 10px;
+            color: #666;
+        }
+    </style>
   </head>
   <body>
-    <form>
-      <div class="form-group">
-        <label for="inputusername"> username</label>
-        <input type="text" class="form-control" id="inputusername" placeholder="Enter username">
-        <small id="usernameHelp" class="form-text text-muted">Only registered users can upload, analyze, or view private files.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-      </div>
-      <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-<!-- create form to collect username, email, password, role (user or admin) -->
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="home.html">Multi-Bed Browser</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="upload.html">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="search.html">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="help.html">Help</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Login Form Container -->
+    <div class="container login-container">
+        <h2 class="text-center mb-4">Sign In</h2>
+        
+        <form class="login-form" action="/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required 
+                       placeholder="Enter your username">
+                <div class="error-message" id="username-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required 
+                       placeholder="Enter your email">
+                <div class="error-message" id="email-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required 
+                       placeholder="Enter your password">
+                <div class="error-message" id="password-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select class="form-control" id="role" name="role" required>
+                    <option value="">Select a role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="moderator">Moderator</option>
+                </select>
+                <div class="error-message" id="role-error"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <button type="button" class="btn btn-secondary btn-block" onclick="continueAsGuest()">
+                Continue As Guest
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector('.login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            let isValid = true;
+
+            // Clear previous error messages and validation states
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+
+            // Username validation
+            if (!username) {
+                document.getElementById('username-error').textContent = 'Please enter your username';
+                document.getElementById('username-error').style.display = 'block';
+                document.getElementById('username').classList.add('is-invalid');
+                isValid = false;
+            } else if (username.length < 3) {
+                document.getElementById('username-error').textContent = 'Username must be at least 3 characters long';
+                document.getElementById('username-error').style.display = 'block';
+                document.getElementById('username').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Email validation
+            if (!email) {
+                document.getElementById('email-error').textContent = 'Please enter your email address';
+                document.getElementById('email-error').style.display = 'block';
+                document.getElementById('email').classList.add('is-invalid');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email address';
+                document.getElementById('email-error').style.display = 'block';
+                document.getElementById('email').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Password validation
+            if (!password) {
+                document.getElementById('password-error').textContent = 'Please enter your password';
+                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('password').classList.add('is-invalid');
+                isValid = false;
+            } else if (password.length < 6) {
+                document.getElementById('password-error').textContent = 'Password must be at least 6 characters long';
+                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('password').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Role validation
+            if (!role) {
+                document.getElementById('role-error').textContent = 'Please select your role';
+                document.getElementById('role-error').style.display = 'block';
+                document.getElementById('role').classList.add('is-invalid');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Create form data object
+                const formData = {
+                    username: username,
+                    email: email,
+                    password: password,
+                    role: role
+                };
+
+                // Here you would typically send the form data to your server
+                console.log('Form data:', formData);
+                
+                // Simulate API call
+                simulateApiCall(formData)
+                    .then(response => {
+                        if (response.success) {
+                            alert('Sign in successful!');
+                            window.location.href = 'home.html';
+                        } else {
+                            alert('Sign in failed: ' + response.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert('An error occurred during sign in. Please try again.');
+                        console.error('Error:', error);
+                    });
+            }
+        });
+
+        function continueAsGuest() {
+            console.log('Continuing as guest');
+            window.location.href = 'home.html';
+        }
+
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Simulate API call (remove in production)
+        function simulateApiCall(formData) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate successful response
+                    resolve({
+                        success: true,
+                        message: 'Login successful'
+                    });
+                    
+                    // Simulate error (uncomment to test error handling)
+                    // reject(new Error('Network error'));
+                }, 1000);
+            });
+        }
+
+        // Real-time validation
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function() {
+                // Clear error message when user starts typing
+                const errorElement = document.getElementById(`${this.id}-error`);
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+                this.classList.remove('is-invalid');
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
   </body>
 </html>
