@@ -61,28 +61,29 @@
           <h2>Analyze</h2>
 
           <div class="row">
-            <div class="col-4">
+            <div class="col-5">
           <form action='#' method="post">
             <div class="form-group">
-              <select class="custom-select" required>
+              <label for="bedtool">Select BEDTool </label>
+              <select id="bedtool" class="custom-select" required>
                 <option value="">BedTool</option>
-                <option value="1">intersect</option>
-                <option value="2">coverage</option>
-                <option value="3">bamToBed</option>
-                <option value="4">bed12ToBed6</option>
-                <option value="5">getfasta</option>
-                <option value="6">closest</option>
-                <option value="7">subtract</option>
-                <option value="8">map</option>
-                <option value="9">shuffle</option>
-                <option value="10">merge</option>
-                <option value="11">groupby</option>
-                <option value="12">slop</option>
-                <option value="13">multicov</option>
-                <option value="14">bamtobed12</option>
-                <option value="15">overlap</option>
-                <option value="16">annotateBed</option>
-                <option value="17">complement</option>
+                <option value="intersect">intersect</option>
+                <option value="coverage">coverage</option>
+                <option value="bamtobed">bamToBed</option>
+                <option value="bed12ToBed6">bed12ToBed6</option>
+                <option value="getfasta">getfasta</option>
+                <option value="closest">closest</option>
+                <option value="subtract">subtract</option>
+                <option value="map">map</option>
+                <option value="shuffle">shuffle</option>
+                <option value="merge">merge</option>
+                <option value="groupby">groupby</option>
+                <option value="slop">slop</option>
+                <option value="multicov">multicov</option>
+                <option value="bamtobed12">bamtobed12</option>
+                <option value="overlap">overlap</option>
+                <option value="annotateBed">annotateBed</option>
+                <option value="complement">complement</option>
               </select>
               <small id="helpBlock" class="form-text text-muted">
                 <a href="help.html"> &nbsp;  Help &nbsp;  </a>
@@ -91,9 +92,9 @@
               <div id="bedtool-options">
                 <!-- Dynamic bedtool form content -->
             </div>
-
-            <button type="submit" class="btn btn-primary">Run Analysis</button>
+            
             </div>
+            <button type="submit" class="btn btn-primary">Run Analysis</button>
           </form>
           </div>
           </div>
