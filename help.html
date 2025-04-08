@@ -35,7 +35,63 @@
   </head>
   <body>
     <h1>Hello, world!</h1>
-
+<p>
+  ---
+  
+  ## **TBedtools Utilities**
+  
+  1. **Intersect**  
+     Finds overlapping intervals between two datasets, allowing fine control over how intersections are reported. This is one of the most widely used tools for comparing genomic features.
+  
+  2. **Merge**  
+     Combines overlapping or adjacent intervals into single intervals, simplifying datasets and reducing redundancy.
+  
+  3. **Subtract**  
+     Removes overlapping intervals between two datasets, isolating unique regions in a dataset.
+  
+  4. **Coverage**  
+     Calculates the depth of coverage for features in a dataset, useful for understanding sequencing data representation.
+  
+  5. **Genomecov**  
+     Generates genome-wide coverage summaries, which are essential for visualizing sequencing depth and identifying regions of high or low coverage.
+  
+  6. **Closest**  
+     Identifies the nearest feature in one dataset to each feature in another dataset, helping associate genomic elements like genes and regulatory regions.
+  
+  7. **Getfasta**  
+     Extracts sequences from a reference genome based on input BED coordinates, enabling retrieval of specific genomic regions for further analysis.
+  
+  8. **Shuffle**  
+     Randomizes the positions of features within a genome while preserving constraints, useful for creating null models in statistical analyses.
+  
+  9. **Map**  
+     Aggregates values from one dataset onto features of another dataset, summarizing scores or annotations across genomic intervals.
+  
+  10. **Groupby**  
+      Performs operations like summing or averaging on grouped data based on specified columns, helpful for summarizing complex datasets.
+  
+  11. **Slop**  
+      Expands or contracts genomic intervals by a specified number of bases, often used to adjust regions for motif searches or other analyses.
+  
+  12. **AnnotateBed**  
+      Annotates genomic regions with information from other datasets, often used to integrate functional annotations with genomic intervals.
+  
+  13. **Multicov**  
+      Calculates coverage across multiple datasets simultaneously, providing a comprehensive view of sequencing data overlap.
+  
+  14. **BamToBed**  
+      Converts BAM files into BED format, enabling downstream analysis with other Bedtools utilities.
+  
+  15. **Complement**  
+      Identifies regions of the genome not covered by input intervals, useful for finding gaps or unannotated regions in datasets.
+  
+  16. **Overlap**  
+      Quantifies or identifies the degree of overlap between features in two datasets. This tool is particularly useful for understanding how much one set of intervals overlaps with another (e.g., calculating percent overlap).
+  
+  
+  These tools collectively form the backbone of many bioinformatics workflows and are indispensable for tasks involving interval manipulation, annotation, and comparison in genomics research!
+  
+  </p>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
