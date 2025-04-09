@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -7,95 +7,495 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#home.html">Multi-Bed Browser  </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="upload.html">Upload</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="search.html">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="users.html">Users</a>
-            </li>
-          </ul>
-          <form class="form-inline">
-            <button class="btn btn-dark my-2 my-sm-0" onclick="window.location.href = 'login.html';">Login</button>
-          </form>
-        </div>
-      </nav>
+    <title>Help Page - Multi-Bed Browser</title>
+    <style>
+      :root {
+        --dna-blue: #1a6fc9;
+        --dna-dark: #0d2b4e;
+        --dna-light: #e8f2fc;
+        --gene-purple: #6a3093;
+        --chromosome-teal: #2b9f9f;
+        --helix-pink: #e83e8c;
+        --helix-orange: #fd7e14;
+      }
+      
+      body {
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.7;
+        background-color: #f9fbfd;
+        color: var(--dna-dark);
+        background-image: 
+          linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)),
+          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e8f2fc" d="M30,50 Q50,30 70,50 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z"/></svg>');
+        background-size: 150px;
+      }
+      
+      .container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        max-width: 1200px;
+      }
+      
+      .navbar {
+        background: linear-gradient(135deg, var(--dna-dark), var(--dna-blue));
+        box-shadow: 0 4px 12px rgba(13, 43, 78, 0.15);
+      }
+      
+      .navbar-brand, .nav-link {
+        color: white !important;
+        font-weight: 600;
+      }
+      
+      .nav-link:hover {
+        color: var(--helix-orange) !important;
+      }
+      
+      .navbar-brand {
+        font-family: 'Source Code Pro', monospace;
+        letter-spacing: 1px;
+      }
+      
+      .btn-dark {
+        background-color: var(--gene-purple);
+        border-color: var(--gene-purple);
+      }
+      
+      .btn-dark:hover {
+        background-color: #5a2580;
+        border-color: #5a2580;
+      }
+      
+      .help-section {
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(13, 43, 78, 0.1);
+        padding: 30px;
+        border-top: 4px solid var(--dna-blue);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .help-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--helix-pink), var(--helix-orange), var(--chromosome-teal), var(--dna-blue), var(--gene-purple));
+      }
+      
+      h1, h2, h3 {
+        font-weight: 700;
+      }
+      
+      h1 {
+        color: var(--dna-dark);
+        margin-bottom: 25px;
+        position: relative;
+        text-align: center;
+        font-size: 2.5rem;
+      }
+      
+      h1::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--helix-pink), var(--helix-orange));
+        margin: 15px auto 25px;
+        border-radius: 2px;
+      }
+      
+      h2 {
+        color: var(--dna-blue);
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+        position: relative;
+        padding-left: 20px;
+      }
+      
+      h2::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        color: var(--helix-orange);
+        font-family: 'Source Code Pro', monospace;
+      }
+      
+      .lead {
+        color: var(--gene-purple);
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      
+      .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(13, 43, 78, 0.08);
+      }
+      
+      .table thead th {
+        background: linear-gradient(135deg, var(--dna-blue), var(--chromosome-teal));
+        color: white;
+        border: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-size: 0.85rem;
+      }
+      
+      .table td, .table th {
+        padding: 14px 16px;
+        vertical-align: middle;
+        border: none;
+      }
+      
+      .table tbody tr:nth-child(odd) {
+        background-color: rgba(232, 242, 252, 0.5);
+      }
+      
+      .table tbody tr:hover {
+        background-color: rgba(26, 111, 201, 0.1);
+      }
+      
+      code {
+        font-family: 'Source Code Pro', monospace;
+        background-color: rgba(26, 111, 201, 0.1);
+        color: var(--dna-blue);
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+      
+      a {
+        color: var(--dna-blue);
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+      
+      a:hover {
+        color: var(--helix-pink);
+        text-decoration: none;
+      }
+      
+      .alert {
+        border-radius: 6px;
+        border-left: 4px solid;
+      }
+      
+      .alert-success {
+        border-left-color: var(--chromosome-teal);
+      }
+      
+      .alert-danger {
+        border-left-color: var(--helix-pink);
+      }
+      
+      .center-image {
+        display: block;
+        margin: 25px auto;
+        max-width: 10%;
+        height: auto;
+        border-radius: 8px;
 
-    <title>Hello, world!</title>
+      }
+      
+      ol {
+        padding-left: 20px;
+      }
+      
+      ol li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 30px;
+      }
+      
+      ol li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        width: 16px;
+        height: 16px;
+        background-color: var(--dna-blue);
+        border-radius: 50%;
+      }
+      
+      strong {
+        color: var(--gene-purple);
+      }
+      
+      .contact-box {
+        background: linear-gradient(135deg, var(--dna-dark), var(--dna-blue));
+        color: white;
+        padding: 30px;
+        border-radius: 8px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .contact-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" d="M30,50 Q50,30 70,50 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z"/></svg>');
+        opacity: 0.3;
+        animation: rotate 60s linear infinite;
+      }
+      
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .contact-box h2 {
+        color: white;
+        position: relative;
+      }
+      
+      .contact-box h2::before {
+        content: none;
+      }
+      
+      .contact-box a {
+        color: white;
+        border-bottom: 2px solid var(--helix-orange);
+      }
+      
+      .contact-box a:hover {
+        color: var(--helix-orange);
+      }
+      
+      footer {
+        background: linear-gradient(135deg, var(--dna-dark), var(--gene-purple));
+        color: white;
+        padding: 25px 0;
+        margin-top: 60px;
+        font-size: 0.9rem;
+      }
+      
+      .helix-icon {
+        color: var(--helix-orange);
+        margin-right: 8px;
+      }
+      
+      .chromosome-icon {
+        color: var(--chromosome-teal);
+        margin-right: 8px;
+      }
+      
+      .gene-icon {
+        color: var(--gene-purple);
+        margin-right: 8px;
+      }
+      
+      .btn-primary {
+        background-color: var(--dna-blue);
+        border-color: var(--dna-blue);
+      }
+      
+      .btn-primary:hover {
+        background-color: #1559a8;
+        border-color: #1559a8;
+      }
+      
+      .dna-pattern {
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 0.1;
+        z-index: -1;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello, world!</h1>
-<p>
-  ---
-  
-  ## **TBedtools Utilities**
-  
-  1. **Intersect**  
-     Finds overlapping intervals between two datasets, allowing fine control over how intersections are reported. This is one of the most widely used tools for comparing genomic features.
-  
-  2. **Merge**  
-     Combines overlapping or adjacent intervals into single intervals, simplifying datasets and reducing redundancy.
-  
-  3. **Subtract**  
-     Removes overlapping intervals between two datasets, isolating unique regions in a dataset.
-  
-  4. **Coverage**  
-     Calculates the depth of coverage for features in a dataset, useful for understanding sequencing data representation.
-  
-  5. **Genomecov**  
-     Generates genome-wide coverage summaries, which are essential for visualizing sequencing depth and identifying regions of high or low coverage.
-  
-  6. **Closest**  
-     Identifies the nearest feature in one dataset to each feature in another dataset, helping associate genomic elements like genes and regulatory regions.
-  
-  7. **Getfasta**  
-     Extracts sequences from a reference genome based on input BED coordinates, enabling retrieval of specific genomic regions for further analysis.
-  
-  8. **Shuffle**  
-     Randomizes the positions of features within a genome while preserving constraints, useful for creating null models in statistical analyses.
-  
-  9. **Map**  
-     Aggregates values from one dataset onto features of another dataset, summarizing scores or annotations across genomic intervals.
-  
-  10. **Groupby**  
-      Performs operations like summing or averaging on grouped data based on specified columns, helpful for summarizing complex datasets.
-  
-  11. **Slop**  
-      Expands or contracts genomic intervals by a specified number of bases, often used to adjust regions for motif searches or other analyses.
-  
-  12. **AnnotateBed**  
-      Annotates genomic regions with information from other datasets, often used to integrate functional annotations with genomic intervals.
-  
-  13. **Multicov**  
-      Calculates coverage across multiple datasets simultaneously, providing a comprehensive view of sequencing data overlap.
-  
-  14. **BamToBed**  
-      Converts BAM files into BED format, enabling downstream analysis with other Bedtools utilities.
-  
-  15. **Complement**  
-      Identifies regions of the genome not covered by input intervals, useful for finding gaps or unannotated regions in datasets.
-  
-  16. **Overlap**  
-      Quantifies or identifies the degree of overlap between features in two datasets. This tool is particularly useful for understanding how much one set of intervals overlaps with another (e.g., calculating percent overlap).
-  
-  
-  These tools collectively form the backbone of many bioinformatics workflows and are indispensable for tasks involving interval manipulation, annotation, and comparison in genomics research!
-  
-  </p>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#home.html"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="upload.html"><i class="fas fa-upload"></i> Upload</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="search.html"><i class="fas fa-search"></i> Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="users.html"><i class="fas fa-users"></i> Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+      <h1>Genomic Help Center</h1>
+      <p class="lead">Navigate the Multi-Bed Browser with our comprehensive genomic guide</p>
+
+      <!-- Upload Section -->
+      <div class="help-section">
+        <h2><i class="fas fa-upload chromosome-icon"></i> Uploading Files</h2>
+        <p>Follow these steps to upload your genomic data files:</p>
+        <ol>
+          <li>Go to the <strong>Upload</strong> page.</li>
+          <li>Enter a file name and description.</li>
+          <li>Select a project from the dropdown menu.</li>
+          <li>Choose a file to upload (supported formats: <code>.bed</code>, <code>.csv</code>,<code>.txt</code>.</li>
+          <li>Click the <strong>Upload</strong> button.</li>
+        </ol>
+        <p>After uploading, you can view and manage your files in the "View Files" section. Ensure your file type and size are supported.</p>
+        
+        <div class="alert alert-success" role="alert">
+          <strong><i class="fas fa-check-circle"></i> Successful Upload:</strong> You have successfully uploaded your file. 
+        </div>
+        <div class="alert alert-danger" role="alert">
+          <strong><i class="fas fa-exclamation-circle"></i> Error Message:</strong> Upload failed. Please check file type, size, and project selection.
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="help-section">
+        <h2><i class="fas fa-search gene-icon"></i> Searching Files</h2>
+        <p>Use the <strong>Search</strong> page to analyze uploaded data. Filter your results by project, query type, or genomic region. Results are displayed in a table format.</p>
+        <ol>
+          <li>Go to the <strong>Search</strong> page.</li>
+          <li>Select a BEDTool.</li>
+          <li>Choose the Project and File names.</li>
+          <li>Click <strong>Run Analysis</strong> to view results.</li>
+        </ol>
+      </div>
+
+      <!-- Bedtools Utilities Section -->
+      <div class="help-section">
+        <h2><i class="fas fa-tools helix-icon"></i> Bedtools Utilities</h2>
+        <p>The following table lists all the Bedtools commands integrated into the platform:</p>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 20%">Command</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Intersect</code></td>
+                <td>Finds overlapping intervals between two datasets, allowing fine control over how intersections are reported.</td>
+              </tr>
+              <tr>
+                <td><code>Merge</code></td>
+                <td>Combines overlapping or adjacent intervals into single intervals, simplifying datasets and reducing redundancy.</td>
+              </tr>
+              <tr>
+                <td><code>Subtract</code></td>
+                <td>Removes overlapping intervals between two datasets, isolating unique regions in a dataset.</td>
+              </tr>
+              <tr>
+                <td><code>Coverage</code></td>
+                <td>Calculates the depth of coverage for features in a dataset, useful for understanding sequencing data representation.</td>
+              </tr>
+              <tr>
+                <td><code>Genomecov</code></td>
+                <td>Generates genome-wide coverage summaries, which are essential for visualizing sequencing depth and identifying regions of high or low coverage.</td>
+              </tr>
+              <tr>
+                <td><code>Closest</code></td>
+                <td>Identifies the nearest feature in one dataset to each feature in another dataset, helping associate genomic elements like genes and regulatory regions.</td>
+              </tr>
+              <tr>
+                <td><code>Getfasta</code></td>
+                <td>Extracts sequences from a reference genome based on input BED coordinates, enabling retrieval of specific genomic regions for further analysis.</td>
+              </tr>
+              <tr>
+                <td><code>Shuffle</code></td>
+                <td>Randomizes the positions of features within a genome while preserving constraints, useful for creating null models in statistical analyses.</td>
+              </tr>
+              <tr>
+                <td><code>Map</code></td>
+                <td>Aggregates values from one dataset onto features of another dataset, summarizing scores or annotations across genomic intervals.</td>
+              </tr>
+              <tr>
+                <td><code>Groupby</code></td>
+                <td>Performs operations like summing or averaging on grouped data based on specified columns, helpful for summarizing complex datasets.</td>
+              </tr>
+              <tr>
+                <td><code>Slop</code></td>
+                <td>Expands or contracts genomic intervals by a specified number of bases, often used to adjust regions for motif searches or other analyses.</td>
+              </tr>
+              <tr>
+                <td><code>AnnotateBed</code></td>
+                <td>Annotates genomic regions with information from other datasets, often used to integrate functional annotations with genomic intervals.</td>
+              </tr>
+              <tr>
+                <td><code>Multicov</code></td>
+                <td>Calculates coverage across multiple datasets simultaneously, providing a comprehensive view of sequencing data overlap.</td>
+              </tr>
+              <tr>
+                <td><code>BamToBed</code></td>
+                <td>Converts BAM files into BED format, enabling downstream analysis with other Bedtools utilities.</td>
+              </tr>
+              <tr>
+                <td><code>Complement</code></td>
+                <td>Identifies regions of the genome not covered by input intervals, useful for finding gaps or unannotated regions in datasets.</td>
+              </tr>
+              <tr>
+                <td><code>Overlap</code></td>
+                <td>Quantifies or identifies the degree of overlap between features in two datasets, e.g., calculating percent overlap.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-4">
+          <a href="https://bedtools.readthedocs.io/" target="_blank" class="btn btn-primary">
+            <i class="fas fa-book"></i> Official Bedtools Documentation
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="help-section contact-box">
+        <h2><i class="fas fa-life-ring"></i> Need More Help?</h2>
+        <p>Our genomic specialists are ready to assist you with any questions or issues.</p>
+        <p class="mb-0">
+          <a href="mailto:support@multibedbrowser.com">
+            <i class="fas fa-envelope"></i> @
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+      <div class="container">
+        <p class="mb-0"><i class="fas fa-dna"></i> &copy; 2025 Multi-Bed Browser Team. All genomic rights reserved.</p>
+      </div>
+    </footer>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9QKtv3Rn7W3mgPxhU9/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>
