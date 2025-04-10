@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -26,15 +26,134 @@
             </li>
           </ul>
           <form class="form-inline">
-            <button class="btn btn-dark my-2 my-sm-0" onclick="window.location.href = 'login.html';">Login</button>
+            <a class="btn btn-dark my-2 my-sm-0" href="login.html">Login</a> 
           </form>
         </div>
       </nav>
-      
-    <title>Hello, world!</title>
+      <style>
+        .upload-container {
+          max-width: 800px;
+          margin: 2rem auto;
+          padding: 2rem;
+          border: 1px solid #ccc;
+          border-radius: 1rem;
+          background-color: #f9f9f9;
+        }
+      </style>
+    <title> UPLOAD </title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    <div class="container upload-container">
+      <h2 class="mb-4">Upload BED Files</h2>
+
+      <form id="uploadForm" enctype="multipart/form-data">
+        <!-- Upload Type -->
+        <div class="form-group">
+          <label for="uploadType">Upload Type</label>
+          <select class="form-control" id="uploadType" name="uploadType">
+            <option value="single">Single BED File</option>
+            <option value="project">Study/Project (multiple files)</option>
+          </select>
+        </div>
+
+        <!-- Study/Project (only for single BED file) -->
+        <div id="studyProjectOptions">
+          <div class="form-group">
+            <label for="study">Select Study</label>
+            <select class="form-control" id="study" name="study">
+              <!-- Populated dynamically from database -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="project">Select Project</label>
+            <select class="form-control" id="project" name="project">
+              <!-- Populated dynamically from database -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Species -->
+        <div class="form-group">
+          <label for="species">Species</label>
+          <select class="form-control" id="species" name="species" onchange="updateGenomeReleases()">
+            <option value="">-- Select --</option>
+            <option value="human">Human</option>
+            <option value="mouse">Mouse</option>
+          </select>
+        </div>
+
+        <!-- Genome Release -->
+        <div class="form-group">
+          <label for="genome">Genome Release</label>
+          <select class="form-control" id="genome" name="genome">
+            <!-- Populated based on species -->
+          </select>
+        </div>
+
+        <!-- Experiment Type -->
+        <div class="form-group">
+          <label for="experiment">Experiment Type</label>
+          <select class="form-control" id="experiment" name="experiment">
+            <option value="RNA-Seq">RNA-Seq</option>
+            <option value="ATAC-Seq">ATAC-Seq</option>
+            <option value="ChIP-Seq">ChIP-Seq</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter a description..."></textarea>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-group">
+          <label for="file">Upload File(s)</label>
+          <input type="file" class="form-control-file" id="file" name="file" multiple>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+
+      <!-- Upload Status -->
+      <div id="uploadStatus" class="mt-4" style="display: none;">
+        <div class="alert alert-success" role="alert">
+          File uploaded successfully! <br>
+          <strong>Study:</strong> <span id="uploadedStudy"></span><br>
+          <strong>Project:</strong> <span id="uploadedProject"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      function updateGenomeReleases() {
+        const species = document.getElementById('species').value;
+        const genome = document.getElementById('genome');
+        genome.innerHTML = '';
+        if (species === 'human') {
+          genome.innerHTML = '<option value="hg37">hg37</option><option value="hg38">hg38</option>';
+        } else if (species === 'mouse') {
+          genome.innerHTML = '<option value="mm19">mm19</option>';
+        }
+      }
+
+      document.getElementById('uploadType').addEventListener('change', function () {
+        const isSingle = this.value === 'single';
+        document.getElementById('studyProjectOptions').style.display = isSingle ? 'block' : 'none';
+      });
+
+      document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        // Simulated upload callback
+        document.getElementById('uploadedStudy').innerText = document.getElementById('study').value || 'N/A';
+        document.getElementById('uploadedProject').innerText = document.getElementById('project').value || 'N/A';
+        document.getElementById('uploadStatus').style.display = 'block';
+
+        // In practice, you'd POST the form data via AJAX/fetch to the server here.
+      });
+    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
