@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiBed Browser</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="home.html" class="logo">
+                <i class="fas fa-dna"></i>&nbsp;MultiBed Browser
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="home.html" data-page="home" class="active">
+                        <i class="fas fa-home"></i> Home
+                    </a></li>
+                    <li><a href="search.html" data-page="search">
+                        <i class="fas fa-search"></i> Search
+                    </a></li>
+                    <li><a href="upload.html" data-page="upload">
+                        <i class="fas fa-upload"></i> Upload
+                    </a></li>
+                    <li><a href="users.html" data-page="users">
+                        <i class="fas fa-users"></i> Users
+                    </a></li>
+                    <li><a href="help.html" data-page="help">
+                        <i class="fas fa-question-circle"></i> Help
+                    </a></li>
+                    <li><a href="login.html" data-page="login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="content">
+        <!-- Content will be loaded here dynamically -->
+    </main>
+
+    <footer>
+        <p><i class="fas fa-dna"></i> &copy; 2024 Multi-Bed Browser Team. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            const contentArea = document.getElementById('content');
+
+            // Function to load content
+            async function loadContent(page) {
+                try {
+                    const response = await fetch(`${page}.html`);
+                    if (!response.ok) throw new Error('Page not found');
+                    const html = await response.text();
+                    contentArea.innerHTML = html;
+                    
+                    // Update active state
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-page') === page) {
+                            link.classList.add('active');
+                        }
+                    });
+                } catch (error) {
+                    contentArea.innerHTML = `<h2>Error loading content: ${error.message}</h2>`;
+                }
+            }
+
+            // Add click event listeners to navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = e.target.closest('a').getAttribute('data-page');
+                    loadContent(page);
+                });
+            });
+
+            // Load home page by default
+            loadContent('home');
+        });
+    </script>
+</body>
+</html> 
