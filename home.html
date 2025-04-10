@@ -1,45 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <div class="home-container">
+        <h1 class="title">What Is The Multi-Bed Browser?</h1>
+        
+        <p class="description">
+            The Multi-Bed Browser is a modern web-based platform designed to simplify how you upload, view, 
+            and manage multiple files in one place. Using your browser, you can easily access your files without 
+            needing to install extra software. Simple, efficient, and user-friendly.
+        </p>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <div class="image-container">
+            <img src="images/dna-visualization.jpg" alt="DNA Data Visualization" class="feature-image">
+        </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#home.html">Multi-Bed Browser <span class="sr-only">(current)</span> </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="upload.html">Upload</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="search.html">Search</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="users.html">Users</a>
-          </li>
-        </ul>
-        <form class="form-inline">
-          <button class="btn btn-dark my-2 my-sm-0" type="button" onclick="window.location.href = 'login.html';">Login</button>
-        </form>
-      </div>
-    </nav>
+        <section class="features-section">
+            <h2 class="section-heading">Key Features</h2>
 
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
+            <div class="feature-block">
+                <h3 class="subheading">Easy File Management</h3>
+                <p class="body-text">
+                    Upload, organize, and manage your genomic data files with ease. Our intuitive interface makes it simple 
+                    to handle multiple BED files simultaneously.
+                </p>
+            </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+            <div class="feature-block">
+                <h3 class="subheading">Advanced Visualization</h3>
+                <p class="body-text">
+                    View and analyze your genomic data with powerful visualization tools. Compare multiple tracks, 
+                    zoom into regions of interest, and export your findings.
+                </p>
+            </div>
+
+            <div class="feature-block">
+                <h3 class="subheading">Collaborative Research</h3>
+                <p class="body-text">
+                    Share your data and findings with colleagues worldwide. Our platform supports real-time collaboration, 
+                    making it easier than ever to work together on genomic research projects.
+                </p>
+            </div>
+
+            <div class="button-group">
+                <button class="primary-button">Get Started</button>
+                <button class="secondary-button">Learn More</button>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 

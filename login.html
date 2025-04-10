@@ -7,79 +7,14 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    
-    <style>
-        .login-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        .error-message {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 5px;
-            display: none;
-        }
-        .form-control.is-invalid {
-            border-color: #dc3545;
-            padding-right: calc(1.5em + .75rem);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(.375em + .1875rem) center;
-            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
-        }
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-            position: relative;
-        }
-        .divider::before,
-        .divider::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 45%;
-            height: 1px;
-            background-color: #ddd;
-        }
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-        .divider span {
-            background-color: white;
-            padding: 0 10px;
-            color: #666;
-        }
-    </style>
+    <link rel="stylesheet" href="css/login.css">
   </head>
   <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="home.html">Multi-Bed Browser</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="upload.html">Upload</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="search.html">Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="help.html">Help</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
     <!-- Login Form Container -->
     <div class="container login-container">
         <h2 class="text-center mb-4">Sign In</h2>
         
-        <form class="login-form" action="/login" method="POST">
+        <form class="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required 
@@ -197,20 +132,12 @@
                 // Here you would typically send the form data to your server
                 console.log('Form data:', formData);
                 
-                // Simulate API call
-                simulateApiCall(formData)
-                    .then(response => {
-                        if (response.success) {
-                            alert('Sign in successful!');
-                            window.location.href = 'home.html';
-                        } else {
-                            alert('Sign in failed: ' + response.message);
-                        }
-                    })
-                    .catch(error => {
-                        alert('An error occurred during sign in. Please try again.');
-                        console.error('Error:', error);
-                    });
+                // Store user data in localStorage
+                localStorage.setItem('username', formData.username);
+                localStorage.setItem('role', formData.role);
+                
+                // Redirect to welcome page with query parameters
+                window.location.href = `welcome_user.html?username=${encodeURIComponent(formData.username)}&role=${encodeURIComponent(formData.role)}`;
             }
         });
 
@@ -222,22 +149,6 @@
         function isValidEmail(email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailPattern.test(email);
-        }
-
-        // Simulate API call (remove in production)
-        function simulateApiCall(formData) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    // Simulate successful response
-                    resolve({
-                        success: true,
-                        message: 'Login successful'
-                    });
-                    
-                    // Simulate error (uncomment to test error handling)
-                    // reject(new Error('Network error'));
-                }, 1000);
-            });
         }
 
         // Real-time validation
