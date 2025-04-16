@@ -109,9 +109,11 @@
 
           <div class="mb-8">
             <form id="viewProjectsForm" class="mb-3">
-              <button type="submit" class="btn btn-primary">View Projects</button>
+              <button type="submit" id="get_projects_button" class="btn btn-primary">View Projects</button>
             </form>
-  
+            
+            <div id="projects_display"></div>
+
             <form id="viewFilesForm">
               <div class="form-group">
                 <input type="text" class="form-control mb-2" id="projectName" placeholder="Enter Project Name">
@@ -131,6 +133,14 @@
       </div>
     </div>
 
+    <script>
+      $(document).ready(function(){
+        $("#get_projects_button").click(function(){
+          $("projects_display").load("https://bioed-new.bu.edu/students_25/Team14/project/templates/projects")
+        })
+      })
+
+    </script>
     <!-- JavaScript -->
     <script src="bedtools-form.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
