@@ -21,11 +21,13 @@ def index():
     cur = conn.cursor()
 
     # Fetch projects
-    cur.execute("SELECT project_id, project_name FROM Projects")
+    query1 = """SELECT project_id, project_name FROM Projects"""
+    cur.execute(query1)
     projects = cur.fetchall()
 
     # Fetch studies
-    cur.execute("SELECT study_id, stduy_name FROM Studies")
+    query2 = """SELECT study_id, stduy_name FROM Studies"""
+    cur.execute(query2)
     studies = cur.fetchall()
 
     conn.close()
