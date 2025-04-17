@@ -67,13 +67,19 @@
           <div class="form-group">
             <label for="study">Select Study</label>
             <select class="form-control" id="study" name="study">
-              <!-- Populated dynamically from database -->
+              <select class="form-control" id="study" name="study">
+                {% for id, name in studies %}
+                  <option value="{{ id }}">{{ name }}</option>
+                {% endfor %}
+              </select>
             </select>
           </div>
           <div class="form-group">
             <label for="project">Select Project</label>
             <select class="form-control" id="project" name="project">
-              <!-- Populated dynamically from database -->
+              {% for id, name in projects %}
+                <option value="{{ id }}">{{ name }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
