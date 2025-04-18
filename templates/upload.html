@@ -63,6 +63,7 @@
         </div>
 
         <!-- Study/Project (only for single BED file) -->
+        <p>Go to the bottom of the page to create a new study or project. </p>
         <div id="studyProjectOptions">
           <div class="form-group">
             <label for="study">Select Study</label>
@@ -135,6 +136,31 @@
           <strong>Project:</strong> <span id="uploadedProject"></span>
         </div>
       </div>
+      <hr class="my-5">
+
+      <div class="container mt-5">
+        <h4>Create New Study / Project</h4>
+        <form id="createStudyProjectForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="newStudy">New Study Name</label>
+              <input type="text" class="form-control" id="newStudy" name="newStudy" placeholder="Enter new study name">
+              <button type="button" class="btn btn-success mt-2" id="createStudyBtn">Create Study</button>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="newProject">New Project Name</label>
+              <input type="text" class="form-control" id="newProject" name="newProject" placeholder="Enter new project name">
+              <button type="button" class="btn btn-success mt-2" id="createProjectBtn">Create Project</button>
+            </div>
+          </div>
+        </form>
+      
+        <div id="createStatus" class="mt-3" style="display: none;">
+          <div class="alert alert-info" role="alert" id="createStatusMsg">
+            <!-- Message will be populated by JS -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
@@ -164,6 +190,25 @@
         document.getElementById('uploadStatus').style.display = 'block';
 
         // In practice, you'd POST the form data via AJAX/fetch to the server here.
+      });
+      document.getElementById('createStudyBtn').addEventListener('click', function () {
+      const study = document.getElementById('newStudy').value.trim();
+      if (study) {
+      document.getElementById('createStatusMsg').innerHTML = `
+      <strong>New Study Created:</strong> ${study}
+      `;
+      document.getElementById('createStatus').style.display = 'block';
+      }
+      });
+
+      document.getElementById('createProjectBtn').addEventListener('click', function () {
+      const project = document.getElementById('newProject').value.trim();
+      if (project) {
+      document.getElementById('createStatusMsg').innerHTML = `
+      <strong>New Project Created:</strong> ${project}
+    `  ;
+      document.getElementById('createStatus').style.display = 'block';
+      }
       });
     </script>
 
