@@ -1,0 +1,302 @@
+:root {
+    --dna-blue: #1a6fc9;
+    --dna-dark: #0d2b4e;
+    --dna-light: #e8f2fc;
+    --gene-purple: #6a3093;
+    --chromosome-teal: #2b9f9f;
+    --helix-pink: #e83e8c;
+    --helix-orange: #fd7e14;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.7;
+    background-color: #f9fbfd;
+    color: var(--dna-dark);
+    background-image: 
+      linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9)),
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e8f2fc" d="M30,50 Q50,30 70,50 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z"/></svg>');
+    background-size: 150px;
+  }
+  
+  /* .container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    max-width: 1200px;
+  } */
+  
+  .navbar {
+    background: linear-gradient(135deg, var(--dna-dark), var(--dna-blue));
+    box-shadow: 0 4px 12px rgba(13, 43, 78, 0.15);
+  }
+  
+  .navbar-brand, .nav-link {
+    color: white !important;
+    font-weight: 600;
+  }
+  
+  .nav-link:hover {
+    color: var(--helix-orange) !important;
+  }
+  
+  .navbar-brand {
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 1px;
+  }
+  
+  .btn-dark {
+    background-color: var(--gene-purple);
+    border-color: var(--gene-purple);
+  }
+  
+  .btn-dark:hover {
+    background-color: #5a2580;
+    border-color: #5a2580;
+  }
+  
+  .help-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .help-container .text-center {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--dna-dark), var(--dna-blue));
+    color: white;
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .help-container .text-center::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" d="M30,50 Q50,30 70,50 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z"/></svg>');
+    opacity: 0.3;
+    animation: rotate 60s linear infinite;
+  }
+  
+  .help-container .text-center h1 {
+    position: relative;
+    z-index: 1;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+  
+  .help-container .text-center p {
+    position: relative;
+    z-index: 1;
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .help-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
+  .help-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-heading {
+    color: var(--dna-blue);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .subheading {
+    color: var(--dna-dark);
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+  }
+  
+  .body-text {
+    color: var(--dna-dark);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 1rem 0;
+  }
+  
+  .feature-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  
+  .feature-list li::before {
+    content: "•";
+    color: var(--dna-blue);
+    position: absolute;
+    left: 0;
+  }
+  
+  .steps-list {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+  
+  .steps-list li {
+    padding: 0.5rem 0;
+    color: var(--dna-dark);
+  }
+  
+  .task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 1.5rem 0;
+  }
+  
+  .task-item {
+    background: var(--dna-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--dna-blue);
+  }
+  
+  .issue-item {
+    background: #fff8f8;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--helix-pink);
+  }
+  
+  .issue-content {
+    margin-top: 1rem;
+  }
+  
+  .info-block {
+    background: var(--dna-light);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .info-block i {
+    color: var(--dna-blue);
+    font-size: 1.2rem;
+  }
+  
+  .contact-block {
+    background: var(--dna-light);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+  }
+  
+  .contact-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 1rem 0;
+  }
+  
+  .contact-list li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .contact-list i {
+    color: var(--dna-blue);
+  }
+  
+  @media (max-width: 768px) {
+    .help-container {
+        padding: 1rem;
+    }
+
+    .help-section {
+        padding: 1.5rem;
+    }
+
+    .task-list {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .section-heading {
+        font-size: 1.75rem;
+    }
+
+    .subheading {
+        font-size: 1.25rem;
+    }
+  }
+  
+  .footer {
+    background: linear-gradient(135deg, var(--dna-dark), var(--gene-purple));
+    color: white;
+    padding: 25px 0;
+    margin-top: 60px;
+    font-size: 0.9rem;
+  } 
+  
+  .helix-icon {
+    color: var(--helix-orange);
+    margin-right: 8px;
+  }
+  
+  .chromosome-icon {
+    color: var(--chromosome-teal);
+    margin-right: 8px;
+  }
+  
+  .gene-icon {
+    color: var(--gene-purple);
+    margin-right: 8px;
+  }
+  
+  .btn-primary {
+    background-color: var(--dna-blue);
+    border-color: var(--dna-blue);
+  }
+  
+  .btn-primary:hover {
+    background-color: #1559a8;
+    border-color: #1559a8;
+  }
+  
+  .dna-pattern {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.1;
+    z-index: -1;
+  }

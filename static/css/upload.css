@@ -1,0 +1,68 @@
+.upload-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.upload-form-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.upload-form .form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.upload-status .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.upload-status .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.upload-status .table th {
+    font-weight: 600;
+    color: #495057;
+}
+
+.upload-status .table td {
+    vertical-align: middle;
+}
+
+.progress {
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background-color: #007bff;
+}
+
+.status-success {
+    color: #28a745;
+}
+
+.status-error {
+    color: #dc3545;
+}
+
+.status-pending {
+    color: #ffc107;
+}
+
+@media (max-width: 768px) {
+    .upload-container {
+        padding: 10px;
+    }
+    
+    .upload-form-container {
+        padding: 15px;
+    }
+} 
