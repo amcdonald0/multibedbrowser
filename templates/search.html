@@ -134,12 +134,30 @@
     </div>
 
     <script>
-      $(document).ready(function(){
-        $("#get_projects_button").click(function(){
-          $("projects_display").load("https://bioed-new.bu.edu/students_25/Team14/project/templates/projects")
-        })
-      })
+       document.getElementById("get_projects_button").addEventListener("click", function () {
+    fetch("/get_projects")
+      .then(response => response.json())
+      .then(data => {
+        if (data.length === 0) {
+          document.getElementById("projects_display").innerHTML = "<p>No projects found.</p>";
+          return;
+        }
 
+        let table = `<table class="table table-bordered">
+                      <thead>
+                        <tr>${Object.keys(data[0]).map(key => `<th>${key}</th>`).join('')}</tr>
+                      </thead>
+                      <tbody>
+                        ${data.map(row => `<tr>${Object.values(row).map(val => `<td>${val}</td>`).join('')}</tr>`).join('')}
+                      </tbody>
+                    </table>`;
+        document.getElementById("projects_display").innerHTML = table;
+      })
+      .catch(error => {
+        console.error("Error fetching projects:", error);
+        document.getElementById("projects_display").innerHTML = "<p>Error loading projects.</p>";
+      });
+  });
     </script>
     <!-- JavaScript -->
     <script src="bedtools-form.js"></script>
