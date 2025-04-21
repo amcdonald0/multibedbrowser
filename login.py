@@ -1,42 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import pymysql
-from pymysql.cursors import DictCursor
-import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-# Configuration
-class Config:
-    SECRET_KEY = 'your-secret-key-here'
-    DB_HOST = os.environ.get('DB_HOST', 'bioed-new.bu.edu')
-    DB_PORT = int(os.environ.get('DB_PORT', '4253'))
-    DB_USER = os.environ.get('DB_USER', 'zhanna')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'Zhan')
-    DB_NAME = os.environ.get('DB_NAME', 'Team14')
-
-# Database connection
-def get_db_connection():
-    try:
-        connection = pymysql.connect(
-            host=Config.DB_HOST,
-            user=Config.DB_USER,
-            password=Config.DB_PASSWORD,
-            database=Config.DB_NAME,
-            port=Config.DB_PORT,
-            charset='utf8mb4',
-            cursorclass=DictCursor
-        )
-        return connection
-    except Exception as e:
-        print(f"Database connection error: {e}")
-        return None
+import mariadb
+from app import app
 
 # Create Flask application
-app = Flask(__name__)
-app.config['SECRET_KEY'] = Config.SECRET_KEY
-
 def login_required(f):
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
@@ -49,7 +15,7 @@ def login_required(f):
 @app.route('/')
 # @login_required
 def home():
-    return render_template('home.html')
+    return render_template('login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -101,6 +67,3 @@ def logout():
 
 # Import other routes
 # from routes import *
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True) 
