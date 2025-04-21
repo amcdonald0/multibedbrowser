@@ -1,95 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="shared_css.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Navigation Bar -->
-   <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="home.html"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
-      </li>
-        <li class="nav-item">
-          <a class="nav-link" href="upload.html"><i class="fas fa-upload"></i> Upload</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="search.html"><i class="fas fa-search"></i> Search</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="users.html"><i class="fas fa-users"></i> Users</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="help.html"><i class="fas fa-question-circle"></i> Help</a>
-        </li>
-      </ul>
-      <div class="ml-auto">
-        <a class="btn btn-dark" href="login.html">
-          <i class="fas fa-sign-in-alt"></i> Login
-        </a>
-      </div>
-    </div>
-  </nav> 
-  
-    <div class="home-container">
-        <h1 class="title">What Is The Multi-Bed Browser?</h1>
-        
-        <p class="description">
-            The Multi-Bed Browser is a modern web-based platform designed to simplify how you upload, view, 
-            and manage multiple files in one place. Using your browser, you can easily access your files without 
-            needing to install extra software. Simple, efficient, and user-friendly.
-        </p>
+{% extends "base.html" %}
 
-        <div class="image-container">
-            <img src="images/dna-visualization.jpg" alt="DNA Data Visualization" class="feature-image">
+{% block title %}Home - MultiBed Browser{% endblock %}
+
+{% block extra_css %}
+    <link href="/static/css/home.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h1 class="title">What Is The Multi-Bed Browser?</h1>
+    
+    <p class="description">
+        The Multi-Bed Browser is a modern web-based platform designed to simplify how you upload, view, 
+        and manage multiple files in one place. Using your browser, you can easily access your files without 
+        needing to install extra software. Simple, efficient, and user-friendly.
+    </p>
+
+    <div class="image-container">
+        <img src="/static/images/dna-visualization.jpg" alt="DNA Data Visualization" class="feature-image">
+    </div>
+
+    <section class="features-section">
+        <h2 class="section-heading">Key Features</h2>
+
+        <div class="feature-block">
+            <h3 class="subheading">Easy File Management</h3>
+            <p class="body-text">
+                Upload, organize, and manage your genomic data files with ease. Our intuitive interface makes it simple 
+                to handle multiple BED files simultaneously.
+            </p>
         </div>
 
-        <section class="features-section">
-            <h2 class="section-heading">Key Features</h2>
+        <div class="feature-block">
+            <h3 class="subheading">Advanced Visualization</h3>
+            <p class="body-text">
+                View and analyze your genomic data with powerful visualization tools. Compare multiple tracks, 
+                zoom into regions of interest, and export your findings.
+            </p>
+        </div>
 
-            <div class="feature-block">
-                <h3 class="subheading">Easy File Management</h3>
-                <p class="body-text">
-                    Upload, organize, and manage your genomic data files with ease. Our intuitive interface makes it simple 
-                    to handle multiple BED files simultaneously.
-                </p>
-            </div>
+        <div class="feature-block">
+            <h3 class="subheading">Collaborative Research</h3>
+            <p class="body-text">
+                Share your data and findings with colleagues worldwide. Our platform supports real-time collaboration, 
+                making it easier than ever to work together on genomic research projects.
+            </p>
+        </div>
 
-            <div class="feature-block">
-                <h3 class="subheading">Advanced Visualization</h3>
-                <p class="body-text">
-                    View and analyze your genomic data with powerful visualization tools. Compare multiple tracks, 
-                    zoom into regions of interest, and export your findings.
-                </p>
-            </div>
-
-            <div class="feature-block">
-                <h3 class="subheading">Collaborative Research</h3>
-                <p class="body-text">
-                    Share your data and findings with colleagues worldwide. Our platform supports real-time collaboration, 
-                    making it easier than ever to work together on genomic research projects.
-                </p>
-            </div>
-
-            <div class="button-group">
-                <button class="primary-button">Get Started</button>
-                <button class="secondary-button">Learn More</button>
-            </div>
-        </section>
-    </div>
-</body>
-</html> 
+        <div class="button-group">
+            <a href="/upload" class="btn btn-primary">Get Started</a>
+            <a href="/help" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+</div>
+{% endblock %} 
