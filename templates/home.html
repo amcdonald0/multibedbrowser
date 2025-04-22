@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Home - MultiBed Browser{% endblock %}
+
+{% block extra_css %}
+    <link href="/static/css/home.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h1 class="title">What Is The Multi-Bed Browser?</h1>
+    
+    <p class="description">
+        The Multi-Bed Browser is a modern web-based platform designed to simplify how you upload, view, 
+        and manage multiple files in one place. Using your browser, you can easily access your files without 
+        needing to install extra software. Simple, efficient, and user-friendly.
+    </p>
+
+    <div class="image-container">
+        <img src="/static/images/dna-visualization.jpg" alt="DNA Data Visualization" class="feature-image">
+    </div>
+
+    <section class="features-section">
+        <h2 class="section-heading">Key Features</h2>
+
+        <div class="feature-block">
+            <h3 class="subheading">Easy File Management</h3>
+            <p class="body-text">
+                Upload, organize, and manage your genomic data files with ease. Our intuitive interface makes it simple 
+                to handle multiple BED files simultaneously.
+            </p>
+        </div>
+
+        <div class="feature-block">
+            <h3 class="subheading">Advanced Visualization</h3>
+            <p class="body-text">
+                View and analyze your genomic data with powerful visualization tools. Compare multiple tracks, 
+                zoom into regions of interest, and export your findings.
+            </p>
+        </div>
+
+        <div class="feature-block">
+            <h3 class="subheading">Collaborative Research</h3>
+            <p class="body-text">
+                Share your data and findings with colleagues worldwide. Our platform supports real-time collaboration, 
+                making it easier than ever to work together on genomic research projects.
+            </p>
+        </div>
+
+        <div class="button-group">
+            <a href="/upload" class="btn btn-primary">Get Started</a>
+            <a href="/help" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+</div>
+{% endblock %} 

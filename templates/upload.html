@@ -7,9 +7,14 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="shared_css.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#home.html">Multi-Bed Browser  </a>
+        <a class="navbar-brand" href="#home.html"><i class="fas fa-dna helix-icon"></i>Multi-Bed Browser  </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,6 +35,7 @@
           </form>
         </div>
       </nav> 
+      
       <style>
         .upload-container {
           max-width: 800px;
@@ -46,7 +52,7 @@
     <div class="container upload-container">
       <h2 class="mb-4">Upload BED Files</h2>
 
-      <form id="uploadForm" enctype="multipart/form-data">
+      <form id="uploadForm" enctype="multipart/form-data" method="POST">
         <!-- Upload Type -->
         <div class="form-group">
           <label for="uploadType">Upload Type</label>
@@ -55,23 +61,42 @@
             <option value="project">Study/Project (multiple files)</option>
           </select>
         </div>
+        <!-- filename -->
+        <div class="form-group">
+          <label for="filename">File Name</label>
+          <input type="text" class="form-control" id="filename" name="filename" placeholder="Enter file name">
+        </div>
 
         <!-- Study/Project (only for single BED file) -->
+        <p>Go to the bottom of the page to create a new study or project. </p>
         <div id="studyProjectOptions">
+          <!-- Select study -->
           <div class="form-group">
             <label for="study">Select Study</label>
             <select class="form-control" id="study" name="study">
-              <!-- Populated dynamically from database -->
+              <select class="form-control" id="study_name" name="study">
+                
+              </select>
             </select>
           </div>
+          <!-- Select Project -->
           <div class="form-group">
             <label for="project">Select Project</label>
             <select class="form-control" id="project" name="project">
-              <!-- Populated dynamically from database -->
+              
             </select>
           </div>
         </div>
-
+        <!-- File Type -->
+        <div class="form-group">
+          <label for="file_type">File Type</label>
+          <select class="form-control" id="file_type" name="file_type">
+            <option value="">-- Select --</option>
+            <option value="BED">BED</option>
+            <option value="CSV">CSV</option>
+            <option value="TXT">TXT</option>
+          </select>
+        </div>
         <!-- Species -->
         <div class="form-group">
           <label for="species">Species</label>
@@ -84,16 +109,16 @@
 
         <!-- Genome Release -->
         <div class="form-group">
-          <label for="genome">Genome Release</label>
-          <select class="form-control" id="genome" name="genome">
+          <label for="genome_release">Genome Release</label>
+          <select class="form-control" id="genome_release" name="genome_release">
             <!-- Populated based on species -->
           </select>
         </div>
 
         <!-- Experiment Type -->
         <div class="form-group">
-          <label for="experiment">Experiment Type</label>
-          <select class="form-control" id="experiment" name="experiment">
+          <label for="experiment_type">Experiment Type</label>
+          <select class="form-control" id="experiment_type" name="experiment_type">
             <option value="RNA-Seq">RNA-Seq</option>
             <option value="ATAC-Seq">ATAC-Seq</option>
             <option value="ChIP-Seq">ChIP-Seq</option>
@@ -123,21 +148,57 @@
           <strong>Project:</strong> <span id="uploadedProject"></span>
         </div>
       </div>
+      <hr class="my-5">
+
+      <div class="container mt-5">
+        <h4>Create New Study / Project</h4>
+        <form id="createStudyProjectForm">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="newStudy">New Study Name</label>
+              <input type="text" class="form-control" id="newStudy" name="newStudy" placeholder="Enter new study name">
+              <button type="button" class="btn btn-success mt-2" id="createStudyBtn">Create Study</button>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="newProject">New Project Name</label>
+              <input type="text" class="form-control" id="newProject" name="newProject" placeholder="Enter new project name">
+              <button type="button" class="btn btn-success mt-2" id="createProjectBtn">Create Project</button>
+            </div>
+          </div>
+        </form>
+      
+        <div id="createStatus" class="mt-3" style="display: none;">
+          <div class="alert alert-info" role="alert" id="createStatusMsg">
+            <!-- Message will be populated by JS -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
     <script>
+       
+       $(document).ready(function(){
+        const studyname = document.getElementById("study_name").value;
+      });
+       const filepath = "bioed-new.bu.edu/students_25/Team14";
+       
+        function generatePath() {
+          const filename = document.getElementById("filename").value;
+          const final_filepath = `${filepath}/${filename}`;
+          document.getElementById("result").innerText = "Final File Path: " + final_filepath;
+}
       function updateGenomeReleases() {
         const species = document.getElementById('species').value;
-        const genome = document.getElementById('genome');
-        genome.innerHTML = '';
+        const genome_release = document.getElementById('genome_release');
+        genome_release.innerHTML = '';
         if (species === 'human') {
-          genome.innerHTML = '<option value="hg37">hg37</option><option value="hg38">hg38</option>';
+          genome_release.innerHTML = '<option value="hg37">hg37</option><option value="hg38">hg38</option>';
         } else if (species === 'mouse') {
-          genome.innerHTML = '<option value="mm19">mm19</option>';
+          genome_release.innerHTML = '<option value="mm19">mm19</option>';
         }
       }
-
+      // uploat type - whether its a single file or multiple files (study/project)
       document.getElementById('uploadType').addEventListener('change', function () {
         const isSingle = this.value === 'single';
         document.getElementById('studyProjectOptions').style.display = isSingle ? 'block' : 'none';
@@ -152,6 +213,28 @@
         document.getElementById('uploadStatus').style.display = 'block';
 
         // In practice, you'd POST the form data via AJAX/fetch to the server here.
+      });
+
+      // create new study
+      document.getElementById('createStudyBtn').addEventListener('click', function () {
+      const study = document.getElementById('newStudy').value.trim();
+      if (study) {
+      document.getElementById('createStatusMsg').innerHTML = `
+      <strong>New Study Created:</strong> ${study}
+      `;
+      document.getElementById('createStatus').style.display = 'block';
+      }
+      });
+
+      // create new project 
+      document.getElementById('createProjectBtn').addEventListener('click', function () {
+      const project = document.getElementById('newProject').value.trim();
+      if (project) {
+      document.getElementById('createStatusMsg').innerHTML = `
+      <strong>New Project Created:</strong> ${project}
+    `  ;
+      document.getElementById('createStatus').style.display = 'block';
+      }
       });
     </script>
 

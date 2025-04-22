@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="shared_css.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    
+    <style>
+      img {
+        width: 200%;
+        border-radius: 2%;
+      }
+        </style>
+    <title>Search/Analysis</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="home.html"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser  </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="upload.html">Upload</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="search.html">Search <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="help.html">Help</a>
+          </li>
+        </ul>
+        <form class="form-inline">
+          <a class="btn btn-dark my-2 my-sm-0" href="login.html">Login</a>
+        </form>
+      </div>
+    </nav> 
+
+    <div class="container py-4">
+
+      <!-- Combined Alert -->
+      <div class="alert alert-secondary text-center mb-4" role="alert">
+        <b>Important:</b>
+
+        Specify the BedTool that is to be used for your analysis. 
+        Please select the correct Project and File names for your analysis. 
+        Please review our help page for additional information on the BedTools 
+        and information on how to use this website. You may need to utilize the additional
+        queries below to complete analyses. Click "View Project" Button to View All the Projects
+        Stored In Our Database. In the second query you can specify which 
+        project you'd like to look in & view its files.
+      </div>
+      
+      <!-- Analysis Form -->
+      <h2>Analyze</h2>
+      <!-- Main Page Row -->
+      <div class="row">
+        <!-- Analysis Form + Image -->
+        <div class="col-md-6 mb-4">
+          <form id="analysisForm">
+            <div class="form-group">
+              <label for="bedtool">Select a BEDTool</label>
+              <select class="form-control" id="bedtool" name="bedtool">
+                <option value="">-- Select Tool --</option>
+                <option value="annotate">annotate</option>
+                <option value="merge">merge</option>
+                <option value="subtract">subtract</option>
+                <option value="coverage">coverage</option>
+                <option value="genomecov">genomecov</option>
+                <option value="closest">closest</option>
+                <option value="getfasta">getfasta</option>
+                <option value="shuffle">shuffle</option>
+                <option value="map">map</option>
+                <option value="groupby">groupby</option>
+                <option value="slop">slop</option>
+                <option value="annotateBed">annotateBed</option>
+                <option value="complement">complement</option>
+                <option value="multicov">multicov</option>
+                <option value="bamtobed">bamtobed</option>
+                <option value="overlap">overlap</option>
+              </select>
+            </div>
+  
+            <!-- Help Block immediately below dropdown -->
+            <small id="helpBlock" class="form-text text-muted mb-3">
+              <a href="help.html">Need help with tools? Click here.</a>
+            </small>
+  
+            <!-- Dynamic BedTools Options -->
+            <div id="bedtool-options"></div>
+
+            <button type="submit" class="btn btn-primary">Run Analysis</button>
+          </form>
+          
+          <hr>
+       
+
+          <!-- Overview Form -->
+          <h2>Additional Analyses</h2>
+
+          <div class="mb-8">
+            <form id="viewProjectsForm" class="mb-3">
+              <button type="submit" id="get_projects_button" class="btn btn-primary">View Projects</button>
+            </form>
+            
+            <div id="projects_display"></div>
+
+            <form id="viewFilesForm">
+              <div class="form-group">
+                <input type="text" class="form-control mb-2" id="projectName" placeholder="Enter Project Name">
+                <button type="submit" class="btn btn-primary">View Files In Above Project</button>
+              </div>
+            </form>
+          </div>
+        </div>
+  
+      
+          <!-- View Buttons below Analysis -->
+           <!-- Image -->
+           <div class="text-center mt-4">
+            <img src="images/chromosome_search.jpg" alt="ChromosomeImg" class="img-fluid" style="float:right;width:300px;height:400px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+       document.getElementById("get_projects_button").addEventListener("click", function () {
+    fetch("/get_projects")
+      .then(response => response.json())
+      .then(data => {
+        if (data.length === 0) {
+          document.getElementById("projects_display").innerHTML = "<p>No projects found.</p>";
+          return;
+        }
+
+        let table = `<table class="table table-bordered">
+                      <thead>
+                        <tr>${Object.keys(data[0]).map(key => `<th>${key}</th>`).join('')}</tr>
+                      </thead>
+                      <tbody>
+                        ${data.map(row => `<tr>${Object.values(row).map(val => `<td>${val}</td>`).join('')}</tr>`).join('')}
+                      </tbody>
+                    </table>`;
+        document.getElementById("projects_display").innerHTML = table;
+      })
+      .catch(error => {
+        console.error("Error fetching projects:", error);
+        document.getElementById("projects_display").innerHTML = "<p>Error loading projects.</p>";
+      });
+  });
+    </script>
+    <!-- JavaScript -->
+    <script src="bedtools-form.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
