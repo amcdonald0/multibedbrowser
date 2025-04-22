@@ -6,11 +6,10 @@ from app import app
 def get_db_connection():
     try:
         conn = mariadb.connect(
-            user='jriya186',
-            password='mushky1864',
+            user='zhanna',
+            password='Zhan',
             host='bioed-new.bu.edu',
-            database='Team14', 
-            port=4253
+            database='Team14'
         )
         conn.row_factory = mariadb.Row  # Optional, for dict-like access to rows
         return conn

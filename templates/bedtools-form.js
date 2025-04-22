@@ -1,121 +1,66 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const bedtoolSelect = document.getElementById('bedtool');
-    const container = document.getElementById('bedtool-options');
-  
-    if (bedtoolSelect && container) {
-      bedtoolSelect.addEventListener('change', function () {
-        container.innerHTML = ''; // Clear previous inputs
-        const tool = this.value;
-  
-        switch (tool) {
-          case 'annotate':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="input-file">Input File (BED/GFF/VCF)</label>
-                <input type="text" class="form-control-file" id="input-file" name="input_file" required>
-              </div>
-              <div class="form-group">
-                <label>Annotation Files</label>
-                <input type="text" class="form-control-file mb-2" name="annotation_files[]" multiple required>
-                <small class="form-text text-muted">You can select multiple annotation files.</small>
-              </div>
-            `;
-            break;
-  
-          case 'intersect':
-          case 'coverage':
-          case 'subtract':
-          case 'overlap':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="fileA">File A (BED)</label>
-                <input type="text" class="form-control-file" id="fileA" name="fileA" required>
-              </div>
-              <div class="form-group">
-                <label for="fileB">File B (BED)</label>
-                <input type="text" class="form-control-file" id="fileB" name="fileB" required>
-              </div>
-            `;
-            break;
-  
-          case 'merge':
-          case 'sort':
-          case 'genomecov':
-          case 'slop':
-          case 'complement':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="input-file">Input File (BED)</label>
-                <input type="text" class="form-control-file" id="input-file" name="input_file" required>
-              </div>
-            `;
-            break;
-  
-          case 'closest':
-          case 'map':
-          case 'groupby':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="fileA">File A (BED)</label>
-                <input type="text" class="form-control-file" id="fileA" name="fileA" required>
-              </div>
-              <div class="form-group">
-                <label for="fileB">File B (BED)</label>
-                <input type="text" class="form-control-file" id="fileB" name="fileB" required>
-              </div>
-            `;
-            break;
-  
-          case 'getfasta':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="bed-file">BED File</label>
-                <input type="text" class="form-control-file" id="bed-file" name="bed_file" required>
-              </div>
-              <div class="form-group">
-                <label for="fasta-file">Reference Genome (FASTA)</label>
-                <input type="text" class="form-control-file" id="fasta-file" name="fasta_file" required>
-              </div>
-            `;
-            break;
-  
-          case 'shuffle':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="bed-file">Input BED File</label>
-                <input type="text" class="form-control-file" id="bed-file" name="bed_file" required>
-              </div>
-              <div class="form-group">
-                <label for="genome-file">Genome File</label>
-                <input type="text" class="form-control-file" id="genome-file" name="genome_file" required>
-              </div>
-            `;
-            break;
-  
-          case 'annotatebed':
-          case 'multicov':
-            container.innerHTML = `
-              <div class="form-group">
-                <label>Input BED Files</label>
-                <input type="text" class="form-control-file" name="input_bed_files[]" multiple required>
-                <small class="form-text text-muted">Select multiple BED files.</small>
-              </div>
-            `;
-            break;
-  
-          case 'bamtobed':
-            container.innerHTML = `
-              <div class="form-group">
-                <label for="bam-file">Input BAM File</label>
-                <input type="text" class="form-control-file" id="bam-file" name="bam_file" required>
-              </div>
-            `;
-            break;
-  
-          default:
-            container.innerHTML = ''; // Clear if no valid tool selected
-        }
-      });
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize multi-select
+  new MultiSelect('#fileSelect', { search: true, selectAll: true });
+
+  // BedTools configuration
+  const bedtools = {
+    'annotate': files => `annotate [OPTIONS] -i ${files[0]} -files ${files.slice(1).join(' ')}`,
+    'merge': files => `merge [OPTIONS] -i ${files.join(' ')}`,
+    'subtract': files => `subtract [OPTIONS] -a ${files[0]} -b ${files[1]}`,
+    'coverage': files => `coverage [OPTIONS] -a ${files[0]} -b ${files[1]}`,
+    'bamToBed': files => `bamToBed [OPTIONS] -i ${files[0]}`,
+    'bed12ToBed6': files => `bed12ToBed6 [OPTIONS] -i ${files[0]}`,
+    'getfasta': files => `getfasta [OPTIONS] -fi ${files[0]} -bed ${files[1]}`,
+    'genomecov': files => `genomecov [OPTIONS] -i ${files[0]} -g ${files[1]}`,
+    'closest': files => `closest [OPTIONS] -a ${files[0]} -b ${files[1]}`,
+    'map': files => `map [OPTIONS] -a ${files[0]} -b ${files[1]}`,
+    'shuffle': files => `shuffle [OPTIONS] -i ${files[0]} -g ${files[1]}`,
+    'groupby': files => `groupby [OPTIONS] -i ${files[0]}`,
+    'slop': files => `slop [OPTIONS] -i ${files[0]} -g ${files[1]}`,
+    'multicov': files => `multicov [OPTIONS] -bams ${files.join(' ')}`,
+    'bamtobed12': files => `bamToBed [OPTIONS] -bed12 -i ${files[0]}`,
+    'overlap': files => `overlap [OPTIONS] -i ${files[0]} ${files.slice(1).map(f => `-f ${f}`).join(' ')}`,
+    'annotateBed': files => `annotateBed [OPTIONS] -i ${files[0]} ${files.slice(1).map(f => `-f ${f}`).join(' ')}`,
+    'complement': files => `complement [OPTIONS] -i ${files[0]} -g ${files[1]}`,
+    'bamtobed': files => `bamToBed [OPTIONS] -i ${files[0]}`,
+    'intersect': files => `intersect [OPTIONS] -a ${files[0]} -b ${files[1]}`
+  };
+
+  // File selection handler
+  document.getElementById('fileSelect').addEventListener('change', e => {
+    const bedtoolSelect = document.getElementById('bedtoolSelect');
+    bedtoolSelect.disabled = !e.target.selectedOptions.length;
+    
+    // Populate BedTools dropdown
+    bedtoolSelect.innerHTML = '<option value="">Select BedTool</option>';
+    Object.keys(bedtools).forEach(tool => {
+      bedtoolSelect.innerHTML += `<option value="${tool}">${tool}</option>`;
+    });
+  });
+
+  // Command generation handler
+  document.getElementById('bedtoolSelect').addEventListener('change', e => {
+    const tool = e.target.value;
+    const files = Array.from(document.querySelectorAll('#fileSelect option:checked'))
+                     .map(f => f.value);
+    
+    if (bedtools[tool]) {
+      const fullCommand = bedtools[tool](files);
+      const [staticPart, editablePart] = fullCommand.split('[OPTIONS]');
+      
+      document.querySelector('.static-command').textContent = 
+        `bedtools ${staticPart}`;
+      document.getElementById('commandEdit').value = 
+        `[OPTIONS]${editablePart || ''}`;
     }
   });
-  
+
+  // Form submission handler
+  document.getElementById('analysisForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const fullCommand = document.querySelector('.static-command').textContent + 
+                       document.getElementById('commandEdit').value;
+    console.log('Executing:', fullCommand);
+    // Add API call to execute command here
+  });
+});
