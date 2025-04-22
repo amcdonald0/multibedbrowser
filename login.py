@@ -9,7 +9,8 @@ def get_db_connection():
             user='jriya186',
             password='mushky1864',
             host='bioed-new.bu.edu',
-            database='Team14'
+            database='Team14', 
+            port=4253
         )
         conn.row_factory = mariadb.Row  # Optional, for dict-like access to rows
         return conn
