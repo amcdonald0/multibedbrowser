@@ -3,14 +3,19 @@ import mariadb
 from app import app
 
 # Create Flask application
-def login_required(f):
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    decorated_function.__name__ = f.__name__
-    return decorated_function
-
+def get_db_connection():
+    try:
+        conn = mariadb.connect(
+            user='jriya186',
+            password='mushky1864',
+            host='bioed-new.bu.edu',
+            database='Team14'
+        )
+        conn.row_factory = mariadb.Row  # Optional, for dict-like access to rows
+        return conn
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB: {e}")
+        return None
 # Routes
 @app.route('/')
 # @login_required
@@ -35,32 +40,32 @@ def login():
             return redirect(url_for('login'))
 
         try:
-            with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM Users WHERE username = %s', (username,))
-                user = cursor.fetchone()
-                
-                if not user or user['password'] != password:
-                    flash('Invalid username or password', 'error')
-                    return redirect(url_for('login'))
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM Users WHERE username = ?', (username,))
+            user = cursor.fetchone()
+            
+            if not user or user[3] != password:  # adjust index if not using row_factory
+                flash('Invalid username or password', 'error')
+                return redirect(url_for('login'))
 
-                if user['email'] != email or user['urole'] != urole:
-                    flash('Invalid email or role', 'error')
-                    return redirect(url_for('login'))
+            if user[2] != email or user[4] != urole:
+                flash('Invalid email or role', 'error')
+                return redirect(url_for('login'))
 
-                # Сохраняем информацию о пользователе в сессии
-                session['user_id'] = user['user_id']
-                session['username'] = user['username']
-                session['email'] = user['email']
-                session['urole'] = user['urole']
-                
-                return redirect(url_for('home'))
+            session['user_id'] = user[0]
+            session['username'] = user[1]
+            session['email'] = user[2]
+            session['urole'] = user[4]
+
+            return redirect(url_for('home'))
         finally:
+            cursor.close()
             conn.close()
 
     return render_template('login.html')
 
+
 @app.route('/logout')
-@login_required
 def logout():
     session.clear()
     return redirect(url_for('login'))
