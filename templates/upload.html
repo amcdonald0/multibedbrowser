@@ -52,7 +52,7 @@
     <div class="container upload-container">
       <h2 class="mb-4">Upload BED Files</h2>
 
-      <form id="uploadForm" enctype="multipart/form-data">
+      <form id="uploadForm" enctype="multipart/form-data" method="POST">
         <!-- Upload Type -->
         <div class="form-group">
           <label for="uploadType">Upload Type</label>
@@ -61,30 +61,42 @@
             <option value="project">Study/Project (multiple files)</option>
           </select>
         </div>
+        <!-- filename -->
+        <div class="form-group">
+          <label for="filename">File Name</label>
+          <input type="text" class="form-control" id="filename" name="filename" placeholder="Enter file name">
+        </div>
 
         <!-- Study/Project (only for single BED file) -->
         <p>Go to the bottom of the page to create a new study or project. </p>
         <div id="studyProjectOptions">
+          <!-- Select study -->
           <div class="form-group">
             <label for="study">Select Study</label>
             <select class="form-control" id="study" name="study">
-              <select class="form-control" id="study" name="study">
-                {% for id, name in studies %}
-                  <option value="{{ id }}">{{ name }}</option>
-                {% endfor %}
+              <select class="form-control" id="study_name" name="study">
+                
               </select>
             </select>
           </div>
+          <!-- Select Project -->
           <div class="form-group">
             <label for="project">Select Project</label>
             <select class="form-control" id="project" name="project">
-              {% for id, name in projects %}
-                <option value="{{ id }}">{{ name }}</option>
-              {% endfor %}
+              
             </select>
           </div>
         </div>
-
+        <!-- File Type -->
+        <div class="form-group">
+          <label for="file_type">File Type</label>
+          <select class="form-control" id="file_type" name="file_type">
+            <option value="">-- Select --</option>
+            <option value="BED">BED</option>
+            <option value="CSV">CSV</option>
+            <option value="TXT">TXT</option>
+          </select>
+        </div>
         <!-- Species -->
         <div class="form-group">
           <label for="species">Species</label>
@@ -97,16 +109,16 @@
 
         <!-- Genome Release -->
         <div class="form-group">
-          <label for="genome">Genome Release</label>
-          <select class="form-control" id="genome" name="genome">
+          <label for="genome_release">Genome Release</label>
+          <select class="form-control" id="genome_release" name="genome_release">
             <!-- Populated based on species -->
           </select>
         </div>
 
         <!-- Experiment Type -->
         <div class="form-group">
-          <label for="experiment">Experiment Type</label>
-          <select class="form-control" id="experiment" name="experiment">
+          <label for="experiment_type">Experiment Type</label>
+          <select class="form-control" id="experiment_type" name="experiment_type">
             <option value="RNA-Seq">RNA-Seq</option>
             <option value="ATAC-Seq">ATAC-Seq</option>
             <option value="ChIP-Seq">ChIP-Seq</option>
@@ -165,17 +177,28 @@
 
     <!-- Scripts -->
     <script>
+       
+       $(document).ready(function(){
+        const studyname = document.getElementById("study_name").value;
+      });
+       const filepath = "bioed-new.bu.edu/students_25/Team14";
+       
+        function generatePath() {
+          const filename = document.getElementById("filename").value;
+          const final_filepath = `${filepath}/${filename}`;
+          document.getElementById("result").innerText = "Final File Path: " + final_filepath;
+}
       function updateGenomeReleases() {
         const species = document.getElementById('species').value;
-        const genome = document.getElementById('genome');
-        genome.innerHTML = '';
+        const genome_release = document.getElementById('genome_release');
+        genome_release.innerHTML = '';
         if (species === 'human') {
-          genome.innerHTML = '<option value="hg37">hg37</option><option value="hg38">hg38</option>';
+          genome_release.innerHTML = '<option value="hg37">hg37</option><option value="hg38">hg38</option>';
         } else if (species === 'mouse') {
-          genome.innerHTML = '<option value="mm19">mm19</option>';
+          genome_release.innerHTML = '<option value="mm19">mm19</option>';
         }
       }
-
+      // uploat type - whether its a single file or multiple files (study/project)
       document.getElementById('uploadType').addEventListener('change', function () {
         const isSingle = this.value === 'single';
         document.getElementById('studyProjectOptions').style.display = isSingle ? 'block' : 'none';
@@ -191,6 +214,8 @@
 
         // In practice, you'd POST the form data via AJAX/fetch to the server here.
       });
+
+      // create new study
       document.getElementById('createStudyBtn').addEventListener('click', function () {
       const study = document.getElementById('newStudy').value.trim();
       if (study) {
@@ -201,6 +226,7 @@
       }
       });
 
+      // create new project 
       document.getElementById('createProjectBtn').addEventListener('click', function () {
       const project = document.getElementById('newProject').value.trim();
       if (project) {
