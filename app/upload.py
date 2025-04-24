@@ -23,9 +23,9 @@ def get_db_connection():
 def home():
     return render_template("upload.html")
 
-@app.route('/')
-def studies(/get_studies):
-    study_name = request.args.get("study_name","").strip()
+@app.route('/get_studies', method = "post")
+def studies():
+    study_name = request.args.get("studyname","").strip()
     file_name = request.args.get("file_name","").strip()
     file_path = request.args.get("final_filepath","").strip()
     #file_type = request.args.get("file_size","").strip()
