@@ -23,6 +23,9 @@ def get_db_connection():
 def home():
     return render_template("upload.html")
 
+@app.route('/studies')
+def studies():
+    study_name = request.args.get("study_name","").strip()
 @app.route('/get_studies', method = "post")
 def studies():
     study_name = request.args.get("studyname","").strip()
@@ -37,28 +40,35 @@ def studies():
     experiment_type = request.args.get("experiment_type","").strip()
     conn = get_db_connection()
     cur = conn.cursor()
+@app.route('/index')
+def index():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT project_id, project_name FROM Projects")
+    projects = cur.fetchall()  # List of tuples (id, name)
+    #conn.close()
 
     # Fetch projects
-    query1 = """SELECT project_name FROM Projects"""
-    cur.execute(query1)
-    projects = cur.fetchall()
+    #query1 = """SELECT project_name FROM Projects"""
+    #cur.execute(query1)
+    #projects = cur.fetchall()
 
     # Fetch studies
-    query2 = """SELECT study_name FROM Studies"""
-    cur.execute(query2)
-    studies = cur.fetchall()
+    #query2 = """SELECT study_name FROM Studies"""
+    #cur.execute(query2)
+    #studies = cur.fetchall()
 
     # insert file
-    query3 = """SELECT study_id WHERE study_name = %s"""
-    cur.execute(query3,[study_name])
+    #query3 = """SELECT study_id FROM Studies WHERE study_name = %s"""
+    #cur.execute(query3,[study_name])
 
-    query4 = """
-    INSERT INTO files (file_name, file_path, file_size, upload_date, description, study_id, species, genome_release, experiment_type)
-    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-    cur.execute(query4,[file_name,file_path, file_size, upload_date, description, study_id, species, genome_release, experiment_type])
+    #query4 = """
+    #INSERT INTO files (file_name, file_path, file_size, upload_date, description, study_id, species, genome_release, experiment_type)
+    #VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    #cur.execute(query4,[file_name,file_path, file_size, upload_date, description, study_id, species, genome_release, experiment_type])
     conn.close()
 
-    return render_template('upload.html', projects=projects, studies=studies)
+    return render_template('upload.html', projects=projects)
 
 if __name__ == '__main__':
     app.run(debug=True)
