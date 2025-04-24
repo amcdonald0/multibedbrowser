@@ -26,6 +26,9 @@ def home():
 @app.route('/studies')
 def studies():
     study_name = request.args.get("study_name","").strip()
+@app.route('/get_studies', method = "post")
+def studies():
+    study_name = request.args.get("studyname","").strip()
     file_name = request.args.get("file_name","").strip()
     file_path = request.args.get("final_filepath","").strip()
     #file_type = request.args.get("file_size","").strip()
