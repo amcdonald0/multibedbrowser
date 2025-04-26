@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import mariadb
 from app import app
 from app.config import get_db_connection
 

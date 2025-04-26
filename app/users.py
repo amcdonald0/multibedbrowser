@@ -4,22 +4,18 @@ import mariadb
 from app.config import get_db_connection
 from functools import wraps
 
-# Decorator for admin rights verification
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            flash('Authentication required', 'error')
-            return redirect(url_for('login'))
-        if session.get('urole') != 'admin':
-            flash('Access denied. Admin rights required', 'error')
-            return redirect(url_for('home'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 @app.route('/users')
-@admin_required
 def show_users():
+    # Check if user is logged in
+    if 'user_id' not in session:
+        flash('Authentication required', 'error')
+        return redirect(url_for('login'))
+    
+    # Check if user is admin
+    if session.get('urole') != 'admin':
+        flash('Access denied. Admin rights required', 'error')
+        return redirect(url_for('home'))
+    
     try:
         conn = get_db_connection()
         if conn is None:
@@ -42,8 +38,17 @@ def show_users():
         return render_template('users.html', users=None)
 
 @app.route('/users/create', methods=['GET', 'POST'])
-@admin_required
 def create_user():
+    # Check if user is logged in
+    if 'user_id' not in session:
+        flash('Authentication required', 'error')
+        return redirect(url_for('login'))
+    
+    # Check if user is admin
+    if session.get('urole') != 'admin':
+        flash('Access denied. Admin rights required', 'error')
+        return redirect(url_for('home'))
+    
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
@@ -96,8 +101,17 @@ def create_user():
     return render_template('create_user.html')
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
-@admin_required
 def edit_user(user_id):
+    # Check if user is logged in
+    if 'user_id' not in session:
+        flash('Authentication required', 'error')
+        return redirect(url_for('login'))
+    
+    # Check if user is admin
+    if session.get('urole') != 'admin':
+        flash('Access denied. Admin rights required', 'error')
+        return redirect(url_for('home'))
+    
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
@@ -166,8 +180,17 @@ def edit_user(user_id):
         return redirect(url_for('show_users'))
 
 @app.route('/users/delete/<int:user_id>', methods=['POST'])
-@admin_required
 def delete_user(user_id):
+    # Check if user is logged in
+    if 'user_id' not in session:
+        flash('Authentication required', 'error')
+        return redirect(url_for('login'))
+    
+    # Check if user is admin
+    if session.get('urole') != 'admin':
+        flash('Access denied. Admin rights required', 'error')
+        return redirect(url_for('home'))
+    
     # Prevent deleting your own account
     if user_id == session.get('user_id'):
         flash('You cannot delete your own account', 'error')
