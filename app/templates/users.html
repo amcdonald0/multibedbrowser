@@ -58,11 +58,11 @@
           <tbody>
             {% for row in results %}
               <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}</td>
+                <td>{{ row.password }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.role }}</td>
               </tr>
             {% endfor %}
           </tbody>

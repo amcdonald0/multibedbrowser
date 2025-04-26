@@ -1,24 +1,13 @@
-#!/usr/bin/env python3
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, jsonify
 from app import app
-import json
-import sys
 import mariadb
+from app.config import get_db_connection
 
-def get_db_connection():
-    # Update with your actual DB credentials
-    conn =  mariadb.connect(
-        user='aretham',
-        password='WaitWell024!',
-        host='bioed-new.bu.edu',
-        database='Team14',
-        port=4253 
-    )
 
-@app.route('/')
+@app.route('/search')
 def index():
     return render_template('search.html')
+
 
 @app.route('/get_studies')
 def get_studies():

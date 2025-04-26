@@ -17,7 +17,8 @@ def get_db_connection():
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
         return None
-@app.route('/')
+    
+@app.route('/test')
 def show():
     return render_template("test.html")
 
