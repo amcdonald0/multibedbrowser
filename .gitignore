@@ -75,3 +75,5 @@ yarn-error.log*
 # Local development
 *.local 
 
+docker-compose.yml
+Dockerfile
