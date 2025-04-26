@@ -4,15 +4,15 @@ import mariadb
 from app.config import get_db_connection
 from functools import wraps
 
-# Decorator для проверки прав администратора
+# Decorator for admin rights verification
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
-            flash('Требуется авторизация', 'error')
+            flash('Authentication required', 'error')
             return redirect(url_for('login'))
         if session.get('urole') != 'admin':
-            flash('Доступ запрещен. Требуются права администратора', 'error')
+            flash('Access denied. Admin rights required', 'error')
             return redirect(url_for('home'))
         return f(*args, **kwargs)
     return decorated_function
@@ -23,7 +23,7 @@ def show_users():
     try:
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка подключения к базе данных', 'error')
+            flash('Database connection error', 'error')
             return render_template('users.html', users=None)
             
         cur = conn.cursor(dictionary=True)
@@ -38,7 +38,7 @@ def show_users():
         
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
-        flash(f'Ошибка базы данных: {str(e)}', 'error')
+        flash(f'Database error: {str(e)}', 'error')
         return render_template('users.html', users=None)
 
 @app.route('/users/create', methods=['GET', 'POST'])
@@ -51,30 +51,30 @@ def create_user():
         role = request.form.get('urole')
         
         if not all([username, email, password, role]):
-            flash('Все поля обязательны для заполнения', 'error')
+            flash('All fields are required', 'error')
             return redirect(url_for('create_user'))
         
         try:
             conn = get_db_connection()
             if conn is None:
-                flash('Ошибка подключения к базе данных', 'error')
+                flash('Database connection error', 'error')
                 return redirect(url_for('create_user'))
                 
             cur = conn.cursor(dictionary=True)
             
-            # Проверка, существует ли пользователь с таким именем
+            # Check if user with this username already exists
             cur.execute("SELECT user_id FROM Users WHERE username = %s", (username,))
             if cur.fetchone():
-                flash('Пользователь с таким именем уже существует', 'error')
+                flash('User with this username already exists', 'error')
                 return redirect(url_for('create_user'))
             
-            # Проверка, существует ли пользователь с таким email
+            # Check if user with this email already exists
             cur.execute("SELECT user_id FROM Users WHERE email = %s", (email,))
             if cur.fetchone():
-                flash('Пользователь с таким email уже существует', 'error')
+                flash('User with this email already exists', 'error')
                 return redirect(url_for('create_user'))
             
-            # Добавление нового пользователя
+            # Add new user
             cur.execute(
                 "INSERT INTO Users (username, email, password, urole) VALUES (%s, %s, %s, %s)",
                 (username, email, password, role)
@@ -84,15 +84,15 @@ def create_user():
             cur.close()
             conn.close()
             
-            flash('Пользователь успешно создан', 'success')
+            flash('User created successfully', 'success')
             return redirect(url_for('show_users'))
             
         except mariadb.Error as e:
             print(f"Error creating user: {e}")
-            flash(f'Ошибка создания пользователя: {str(e)}', 'error')
+            flash(f'Error creating user: {str(e)}', 'error')
             return redirect(url_for('create_user'))
     
-    # GET запрос - отображение формы создания
+    # GET request - display creation form
     return render_template('create_user.html')
 
 @app.route('/users/edit/<int:user_id>', methods=['GET', 'POST'])
@@ -104,24 +104,24 @@ def edit_user(user_id):
         role = request.form.get('urole')
         
         if not all([username, email, role]):
-            flash('Все поля обязательны для заполнения', 'error')
+            flash('All fields are required', 'error')
             return redirect(url_for('show_users'))
         
         try:
             conn = get_db_connection()
             if conn is None:
-                flash('Ошибка подключения к базе данных', 'error')
+                flash('Database connection error', 'error')
                 return redirect(url_for('show_users'))
                 
             cur = conn.cursor(dictionary=True)
             
-            # Проверка, существует ли пользователь с таким ID
+            # Check if user with this ID exists
             cur.execute("SELECT user_id FROM Users WHERE user_id = %s", (user_id,))
             if not cur.fetchone():
-                flash('Пользователь не найден', 'error')
+                flash('User not found', 'error')
                 return redirect(url_for('show_users'))
             
-            # Обновление данных пользователя
+            # Update user data
             cur.execute(
                 "UPDATE Users SET username = %s, email = %s, urole = %s WHERE user_id = %s",
                 (username, email, role, user_id)
@@ -131,19 +131,19 @@ def edit_user(user_id):
             cur.close()
             conn.close()
             
-            flash('Пользователь успешно обновлен', 'success')
+            flash('User updated successfully', 'success')
             return redirect(url_for('show_users'))
             
         except mariadb.Error as e:
             print(f"Error updating user: {e}")
-            flash(f'Ошибка обновления пользователя: {str(e)}', 'error')
+            flash(f'Error updating user: {str(e)}', 'error')
             return redirect(url_for('show_users'))
     
-    # GET запрос - отображение формы редактирования
+    # GET request - display edit form
     try:
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка подключения к базе данных', 'error')
+            flash('Database connection error', 'error')
             return redirect(url_for('show_users'))
             
         cur = conn.cursor(dictionary=True)
@@ -155,49 +155,49 @@ def edit_user(user_id):
         conn.close()
         
         if not user:
-            flash('Пользователь не найден', 'error')
+            flash('User not found', 'error')
             return redirect(url_for('show_users'))
         
         return render_template('edit_user.html', user=user)
         
     except mariadb.Error as e:
         print(f"Error fetching user: {e}")
-        flash(f'Ошибка получения данных пользователя: {str(e)}', 'error')
+        flash(f'Error retrieving user data: {str(e)}', 'error')
         return redirect(url_for('show_users'))
 
 @app.route('/users/delete/<int:user_id>', methods=['POST'])
 @admin_required
 def delete_user(user_id):
-    # Запрещаем удаление своего аккаунта
+    # Prevent deleting your own account
     if user_id == session.get('user_id'):
-        flash('Вы не можете удалить свой аккаунт', 'error')
+        flash('You cannot delete your own account', 'error')
         return redirect(url_for('show_users'))
     
     try:
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка подключения к базе данных', 'error')
+            flash('Database connection error', 'error')
             return redirect(url_for('show_users'))
             
         cur = conn.cursor()
         
-        # Проверка, существует ли пользователь с таким ID
+        # Check if user with this ID exists
         cur.execute("SELECT user_id FROM Users WHERE user_id = %s", (user_id,))
         if not cur.fetchone():
-            flash('Пользователь не найден', 'error')
+            flash('User not found', 'error')
             return redirect(url_for('show_users'))
         
-        # Удаление пользователя
+        # Delete user
         cur.execute("DELETE FROM Users WHERE user_id = %s", (user_id,))
         conn.commit()
         
         cur.close()
         conn.close()
         
-        flash('Пользователь успешно удален', 'success')
+        flash('User deleted successfully', 'success')
         return redirect(url_for('show_users'))
         
     except mariadb.Error as e:
         print(f"Error deleting user: {e}")
-        flash(f'Ошибка удаления пользователя: {str(e)}', 'error')
+        flash(f'Error deleting user: {str(e)}', 'error')
         return redirect(url_for('show_users'))
