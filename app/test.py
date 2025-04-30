@@ -1,9 +1,8 @@
-from flask import Flask, render_template
 import mariadb
 
 app = Flask(__name__)
 
-
+# 数据库连接函数
 def get_db_connection():
     try:
         conn = mariadb.connect(
@@ -13,7 +12,7 @@ def get_db_connection():
             database='Team14',
             port=4253
         )
-        return conn
+	return conn
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
         return None
@@ -21,7 +20,7 @@ def get_db_connection():
 def show():
     return render_template("test.html")
 
-# Routing: Display project name and research name
+# 路由: 显示项目名称和研究名称
 @app.route('/studies', methods=['GET'])
 def studies():
     conn = get_db_connection()
@@ -31,21 +30,21 @@ def studies():
     try:
         cur = conn.cursor()
         
-        # query Projects table
+        # 查询 Projects 表
         cur.execute("SELECT project_name FROM Projects")
-        projects = cur.fetchall()  # get bname
+        projects = cur.fetchall()  # 获取所有项目名称
         
-        # query Studies table
+        # 查询 Studies 表
         cur.execute("SELECT study_name FROM Studies")
-        studies = cur.fetchall()  # 
+        studies = cur.fetchall()  # 获取所有研究名称
         
     except mariadb.Error as e:
         print(f"Database error: {e}")
         return "Database operation failed", 500
     finally:
-        conn.close()
+	conn.close()
 
-    # Passing data to the front-end template
+    # 将数据传递给前端模板
     return render_template('test.html', projects=projects, studies=studies)
 
 if __name__ == '__main__':

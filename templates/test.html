@@ -11,10 +11,10 @@
     <div class="container mt-5">
       <h2>Projects and Studies</h2>
 
-      <!--: Projects -->
+      <!-- 下拉菜单: Projects -->
       <div id="form">
       <form name="test" method="get" action="{{ url_for('studies') }}">
-          <!-- : Projects -->
+          <!-- 下拉菜单: Projects -->
 
       <div class="form-group">
         <label for="projectDropdown">Select a Project</label>
@@ -23,9 +23,13 @@
             <option value="{{ project[0] }}">{{ project[0] }}</option>
           {% endfor %}
         </select>
+
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
       </div>
 
-      <!-- : Studies -->
+      <!-- 下拉菜单: Studies -->
       <div class="form-group">
         <label for="studyDropdown">Select a Study</label>
         <select id="studyDropdown" class="form-control">

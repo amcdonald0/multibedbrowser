@@ -1,206 +1,415 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<html>
+<head>
+    <title>Help Center - Multi-Bed Browser</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="help.css">
-
-    <title>Help Page - Multi-Bed Browser</title>
-  
-  </head>
-  <body>
-    <!-- Navigation Bar -->
-   <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="home.html"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <style>
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+        }
+        .navbar-brand .helix-icon {
+            color: #3498db;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .page-title {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .lead {
+            color: #34495e;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .rainbow-line {
+            height: 4px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+            margin: 2rem 0;
+            border-radius: 2px;
+        }
+        .help-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+        .help-item {
+            margin-bottom: 2rem;
+        }
+        .help-item h3 {
+            color: #34495e;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .help-item h3 i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+        .help-item p {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .code {
+            font-family: 'Source Code Pro', monospace;
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e74c3c;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 3px solid #3498db;
+        }
+        .step-number {
+            color: #3498db;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
-        </li>
-          <li class="nav-item">
-            <a class="nav-link" href="upload.html"><i class="fas fa-upload"></i> Upload</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="search.html"><i class="fas fa-search"></i> Search</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="users.html"><i class="fas fa-users"></i> Users</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="help.html"><i class="fas fa-question-circle"></i> Help</a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home_page') }}"><i class="fas fa-home"></i> Home</a>
+            </li>
+            {% if user_urole in ['admin', 'user'] %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('upload_page') }}"><i class="fas fa-upload"></i> Upload</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_projects') }}"><i class="fas fa-folder"></i> View Files</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('search_page') }}"><i class="fas fa-search"></i> Search</a>
+            </li>
+            {% if user_urole == 'admin' %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_users') }}"><i class="fas fa-users"></i> Users</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('help_page') }}"><i class="fas fa-question-circle"></i> Help</a>
+            </li>
         </ul>
         <div class="ml-auto">
-          <a class="btn btn-dark" href="login.html">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </a>
+            {% if session.get('user_id') %}
+            <a class="btn btn-dark" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            {% else %}
+            <a class="btn btn-dark" href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            {% endif %}
         </div>
-      </div>
-    </nav> 
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="container">
-      <h1>Help Center</h1>
-      <p class="lead">Navigate the Multi-Bed Browser with our comprehensive genomic guide</p>
-
-      <!-- Upload Section -->
-      <div class="help-section">
-        <h2><i class="fas fa-upload chromosome-icon"></i> Uploading Files</h2>
-        <p>Follow these steps to upload your genomic data files:</p>
-        <ol>
-          <li>Go to the <strong>Upload</strong> page.</li>
-          <li>Enter a file name and description.</li>
-          <li>Select a project from the dropdown menu.</li>
-          <li>Choose a file to upload (supported formats: <code>.bed</code>, <code>.csv</code>, <code>.txt</code>).</li>
-          <li>Click the <strong>Upload</strong> button.</li>
-        </ol>
-        <p>After uploading, you can view and manage your files in the "View Files" section. Ensure your file type and size are supported.</p>
-        
-        <div class="alert alert-success" role="alert">
-          <strong><i class="fas fa-check-circle"></i> Successful Upload:</strong>  File uploaded successfully! 
+    <div class="container mt-4">
+        <div class="text-center mb-5">
+            <h1 class="page-title">Help Center</h1>
+            <p class="lead">Navigate the Multi-Bed Browser with our comprehensive genomic guide</p>
+            <div class="rainbow-line mx-auto" style="max-width: 600px;"></div>
         </div>
-        <div class="alert alert-danger" role="alert">
-          <strong><i class="fas fa-exclamation-circle"></i> Error Message:</strong> Upload failed. Please check file type, size, and project selection.
-        </div>
-      </div>
 
-      <!-- Search Section -->
-      <div class="help-section">
-        <h2><i class="fas fa-search gene-icon"></i> Searching Files</h2>
-        <p>Use the <strong>Search</strong> page to analyze uploaded data. Filter your results by project, query type, or genomic region. Results are displayed in a table format.</p>
-        <ol>
-          <li>Go to the <strong>Search</strong> page.</li>
-          <li>Select a BEDTool.</li>
-          <li>Choose the Project and File names.</li>
-          <li>Click <strong>Run Analysis</strong> to view results.</li>
-        </ol>
-      </div>
-
-      <!-- Bedtools Utilities Section -->
-      <div class="help-section">
-        <h2><i class="fas fa-tools helix-icon"></i> Bedtools Utilities</h2>
-        <p>The following table lists all the Bedtools commands integrated into the platform:</p>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th style="width: 20%">Command</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>Intersect</code></td>
-                <td>Finds overlapping intervals between two datasets, allowing fine control over how intersections are reported.</td>
-              </tr>
-              <tr>
-                <td><code>Merge</code></td>
-                <td>Combines overlapping or adjacent intervals into single intervals, simplifying datasets and reducing redundancy.</td>
-              </tr>
-              <tr>
-                <td><code>Subtract</code></td>
-                <td>Removes overlapping intervals between two datasets, isolating unique regions in a dataset.</td>
-              </tr>
-              <tr>
-                <td><code>Genomecov</code></td>
-                <td>Generates genome-wide coverage summaries, which are essential for visualizing sequencing depth and identifying regions of high or low coverage.</td>
-              </tr>
-              <tr>
-                <td><code>Closest</code></td>
-                <td>Identifies the nearest feature in one dataset to each feature in another dataset, helping associate genomic elements like genes and regulatory regions.</td>
-              </tr>
-              <tr>
-                <td><code>Getfasta</code></td>
-                <td>Extracts sequences from a reference genome based on input BED coordinates, enabling retrieval of specific genomic regions for further analysis.</td>
-              </tr>
-              <tr>
-                <td><code>Shuffle</code></td>
-                <td>Randomizes the positions of features within a genome while preserving constraints, useful for creating null models in statistical analyses.</td>
-              </tr>
-              <tr>
-                <td><code>Map</code></td>
-                <td>Aggregates values from one dataset onto features of another dataset, summarizing scores or annotations across genomic intervals.</td>
-              </tr>
-              <tr>
-                <td><code>Groupby</code></td>
-                <td>Performs operations like summing or averaging on grouped data based on specified columns, helpful for summarizing complex datasets.</td>
-              </tr>
-              <tr>
-                <td><code>Slop</code></td>
-                <td>Expands or contracts genomic intervals by a specified number of bases, often used to adjust regions for motif searches or other analyses.</td>
-              </tr>
-              <tr>
-                <td><code>AnnotateBed</code></td>
-                <td>Annotates genomic regions with information from other datasets, often used to integrate functional annotations with genomic intervals.</td>
-              </tr>
-              <tr>
-                <td><code>Multicov</code></td>
-                <td>Calculates coverage across multiple datasets simultaneously, providing a comprehensive view of sequencing data overlap.</td>
-              </tr>
-              <tr>
-                <td><code>BamToBed</code></td>
-                <td>Converts BAM files into BED format, enabling downstream analysis with other Bedtools utilities.</td>
-              </tr>
-              <tr>
-                <td><code>Complement</code></td>
-                <td>Identifies regions of the genome not covered by input intervals, useful for finding gaps or unannotated regions in datasets.</td>
-              </tr>
-              <tr>
-                <td><code>Overlap</code></td>
-                <td>Quantifies or identifies the degree of overlap between features in two datasets, e.g., calculating percent overlap.</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="help-section">
+            <h2 class="section-title"><i class="fas fa-project-diagram"></i> Managing Projects and Studies</h2>
+            <div class="help-item">
+                <h3><i class="fas fa-folder-open"></i> Creating a New Project</h3>
+                <p>When uploading files, you can either select an existing project or create a new one. To create a new project:</p>
+                <ul>
+                    <li>Select "+ Create New Project" from the project dropdown</li>
+                    <li>Enter a project name not already used</li>
+                    <li>Add an optional project description</li>
+                </ul>
+            </div>
+            
+            <div class="help-item">
+                <h3><i class="fas fa-microscope"></i> Managing Studies</h3>
+                <p>Studies help organize your files within projects. To create a new study:</p>
+                <ul>
+                    <li>Select a project first</li>
+                    <li>Choose "+ Create New Study" from the study dropdown</li>
+                    <li>Enter a study name not already used</li>
+                    <li>Add an optional study description</li>
+                </ul>
+            </div>
         </div>
-        <div class="text-center mt-4">
-          <p>For more detailed instructions on using Bedtools, visit the official documentation:</p>
-          <a href="https://bedtools.readthedocs.io/" target="_blank" class="btn btn-primary">
-        
-            <i class="fas fa-book"></i> Official Bedtools Documentation
-          </a>
-        </div>
-      </div>
 
-      <!-- Contact Section -->
-      <div class="help-section contact-box">
-        <h2><i class="fas fa-life-ring"></i> Need More Help?</h2>
-        <p>Our genomic specialists are ready to assist you with any questions or issues.</p>
-        <p class="mb-0">
-          <a href="mailto:support@multibedbrowser.com">
-            <i class="fas fa-envelope"></i> @
-          </a>
-        </p>
-      </div>
+        <div class="help-section">
+            <h2 class="section-title"><i class="fas fa-upload"></i> Uploading Files</h2>
+            <div class="help-item">
+                <p>Follow these steps to upload your genomic data files:</p>
+                
+                <div class="step">
+                    <span class="step-number">1.</span>
+                    Go to the <a href="/test3/upload">Upload</a> page.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2.</span>
+                    Select a project and a study from the dropdown menus.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3.</span>
+                    Finish the file information and click the Upload button.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4.</span>
+                    If upload successful, you will see the message "File uploaded successfully to ..."
+                </div>
+                
+                <p class="mt-3">After uploading, you can view and manage your files in the "View Files" section. Ensure your file type and size are supported.</p>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2 class="section-title"><i class="fas fa-upload"></i>BED Analysis </h2>
+            <div class="help-item">
+                <p>Follow these steps to analyze your BED files:</p>
+                
+                <div class="step">
+                    <span class="step-number">1.</span>
+                    Select a study from the dropdown.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2.</span>
+                    Select a BED file from the dropdown (hold Ctrl/Cmd to select multiple).
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3.</span>
+                    Select a BEDTool and edit the command as needed.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4.</span>
+                    Click the "Run Analysis" button.
+                </div>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2 class="section-title"><i class="fas fa-tools"></i> Bedtools Utilities</h2>
+            <div class="help-item">
+                <p>The following table lists all the Bedtools commands integrated into the platform:</p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%">Command</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="code">AnnotateBed</code></td>
+                                <td>
+                                    <div>Annotates genomic regions with information from other datasets, often used to integrate functional annotations with genomic intervals.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools annotate [OPTIONS] -i &lt;BED/GFF/VCF&gt; -files &lt;FILE1 FILE2 .. FILEN&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">BamToBed</code></td>
+                                <td>
+                                    <div>Converts BAM files into BED format, enabling downstream analysis with other Bedtools utilities.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools bamtobed [OPTIONS] -i &lt;BAM&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Closest</code></td>
+                                <td>
+                                    <div>Identifies the nearest feature in one dataset to each feature in another dataset, helping associate genomic elements like genes and regulatory regions.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools closest [OPTIONS] -a &lt;BED/GFF/VCF&gt; -b &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Complement</code></td>
+                                <td>
+                                    <div>Identifies regions of the genome not covered by input intervals, useful for finding gaps or unannotated regions in datasets.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools complement [OPTIONS] -i &lt;BED/GFF/VCF&gt; -g &lt;GENOME&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Genomecov</code></td>
+                                <td>
+                                    <div>Generates genome-wide coverage summaries, which are essential for visualizing sequencing depth and identifying regions of high or low coverage.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools genomecov [OPTIONS] -i &lt;BED/GFF/VCF&gt; -g &lt;GENOME&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Getfasta</code></td>
+                                <td>
+                                    <div>Extracts sequences from a reference genome based on input BED coordinates, enabling retrieval of specific genomic regions for further analysis.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools getfasta [OPTIONS] -fi &lt;FASTA&gt; -bed &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Groupby</code></td>
+                                <td>
+                                    <div>Performs operations like summing or averaging on grouped data based on specified columns, helpful for summarizing complex datasets.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools groupby [OPTIONS] -i &lt;BED/GFF/VCF&gt; -g &lt;GROUP_COLUMNS&gt; -c &lt;OPCOLUMN&gt; -o &lt;OPERATION&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Intersect</code></td>
+                                <td>
+                                    <div>Finds overlapping intervals between two datasets, allowing fine control over how intersections are reported.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools intersect [OPTIONS] -a &lt;FILE&gt; -b &lt;FILE1, FILE2, ..., FILEN&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Map</code></td>
+                                <td>
+                                    <div>Aggregates values from one dataset onto features of another dataset, summarizing scores or annotations across genomic intervals.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools map [OPTIONS] -a &lt;BED/GFF/VCF&gt; -b &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Merge</code></td>
+                                <td>
+                                    <div>Combines overlapping or adjacent intervals into single intervals, simplifying datasets and reducing redundancy.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools merge [OPTIONS] -i &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Multicov</code></td>
+                                <td>
+                                    <div>Calculates coverage across multiple datasets simultaneously, providing a comprehensive view of sequencing data overlap.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools multicov [OPTIONS] -bams &lt;BAM1 BAM2 .. BAMN&gt; -bed &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Overlap</code></td>
+                                <td>
+                                    <div>Quantifies or identifies the degree of overlap between features in two datasets, e.g., calculating percent overlap.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools overlap [OPTIONS] -i &lt;BED/GFF/VCF&gt; -b &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Shuffle</code></td>
+                                <td>
+                                    <div>Randomizes the positions of features within a genome while preserving constraints, useful for creating null models in statistical analyses.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools shuffle [OPTIONS] -i &lt;BED/GFF/VCF&gt; -g &lt;GENOME&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Slop</code></td>
+                                <td>
+                                    <div>Expands or contracts genomic intervals by a specified number of bases, often used to adjust regions for motif searches or other analyses.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools slop [OPTIONS] -i &lt;BED/GFF/VCF&gt; -g &lt;GENOME&gt; -b &lt;SIZE&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="code">Subtract</code></td>
+                                <td>
+                                    <div>Removes overlapping intervals between two datasets, isolating unique regions in a dataset.</div>
+                                    <div class="step" style="background-color: #f8f9fa; margin-top: 8px; padding: 8px; font-family: 'Source Code Pro', monospace; font-size: 0.9em;">
+                                        <i class="fas fa-terminal" style="color: #3498db; margin-right: 8px;"></i>
+                                        bedtools subtract [OPTIONS] -a &lt;BED/GFF/VCF&gt; -b &lt;BED/GFF/VCF&gt;
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="step">
+                    <p>For more detailed instructions on using Bedtools, visit the official documentation:</p>
+                    <a href="https://bedtools.readthedocs.io/" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-book"></i> Official Bedtools Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="text-center">
-      <div class="container">
-        <p class="mb-0"><i class="fas fa-dna"></i> &copy; 2025 Multi-Bed Browser Team.</p>
-      </div>
-    </footer>
-    <!-- <footer class="text-center">
-      <div class="container">
-        <p class="mb-0"><i class="fas fa-dna"></i> &copy; 2025 Multi-Bed Browser Team.</p>
-      </div>
-    </footer> 
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9QKtv3Rn7W3mgPxhU9/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html> 

@@ -1,181 +1,524 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BED File Analysis Tool</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="shared_css.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <style>
-      img {
-        width: 200%;
-        border-radius: 2%;
-      }
-        </style>
-    <title>Search/Analysis</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="home.html"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser  </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+        }
+        .navbar-brand .helix-icon {
+            color: #3498db;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .page-title {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .lead {
+            color: #34495e;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .rainbow-line {
+            height: 4px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+            margin: 2rem 0;
+            border-radius: 2px;
+        }
+        .upload-section, .search-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+        .command-box {
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="upload.html">Upload</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="search.html">Search <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="help.html">Help</a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home_page') }}"><i class="fas fa-home"></i> Home</a>
+            </li>
+            {% if user_urole in ['admin', 'user'] %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('upload_page') }}"><i class="fas fa-upload"></i> Upload</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_projects') }}"><i class="fas fa-folder"></i> View Files</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('search_page') }}"><i class="fas fa-search"></i> Search</a>
+            </li>
+            {% if user_urole == 'admin' %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_users') }}"><i class="fas fa-users"></i> Users</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('help_page') }}"><i class="fas fa-question-circle"></i> Help</a>
+            </li>
         </ul>
-        <form class="form-inline">
-          <a class="btn btn-dark my-2 my-sm-0" href="login.html">Login</a>
-        </form>
-      </div>
-    </nav> 
-
-    <div class="container py-4">
-
-      <!-- Combined Alert -->
-      <div class="alert alert-secondary text-center mb-4" role="alert">
-        <b>Important:</b>
-
-        Specify the BedTool that is to be used for your analysis. 
-        Please select the correct Project and File names for your analysis. 
-        Please review our help page for additional information on the BedTools 
-        and information on how to use this website. You may need to utilize the additional
-        queries below to complete analyses. Click "View Project" Button to View All the Projects
-        Stored In Our Database. In the second query you can specify which 
-        project you'd like to look in & view its files.
-      </div>
-      
-      <!-- Analysis Form -->
-      <h2>Analyze</h2>
-      <!-- Main Page Row -->
-      <div class="row">
-        <!-- Analysis Form + Image -->
-        <div class="col-md-6 mb-4">
-          <form id="analysisForm">
-            <!-- Study Selection -->
-            <div class="form-group">
-              <label>Study Name:</label>
-              <select id="studySelect" class="form-control">
-                <option value="">Select Study</option>
-                <option value="genomics">Genomics Study</option>
-                <option value="proteomics">Proteomics Study</option>
-              </select>
-            </div>
-          
-            <!-- Multi-file Selection -->
-            <div class="form-group ">
-              <label>Select Files:</label>
-              <select class="col-md-6 mb-4" id="fileSelect" multiple data-multi-select>
-                <option value="file1.bed">File 1</option>
-                <option value="file2.bed">File 2</option>
-              </select>
-            </div>
-          
-            <!-- BedTool Selection -->
-            <div class="form-group">
-              <label>BedTools:</label>
-              <select id="bedtoolSelect" class="form-control" disabled>
-                <option value="">Select Files First</option>
-              </select>
-            </div>
-          
-            <!-- Command Display & Editing -->
-            <div class="form-group">
-              <label>Generated Command:</label>
-              <div id="commandContainer">
-                <code class="static-command">bedtools </code>
-                <input type="text" id="commandEdit" class="editable-command" 
-                       placeholder="[OPTIONS] -i <input> -files">
-              </div>
-            </div>
-                 <!-- Help Block immediately below dropdown -->
-                 <small id="helpBlock" class="form-text text-muted mb-3">
-                  <a href="help.html">Need help with tools? Click here.</a>
-                </small>
-          
-            <button type="submit" class="btn btn-primary">Run Analysis</button>
-          </form>
-          
-          
-          <hr>
-       
-
-          <!-- Overview Form -->
-          <h2>Additional Analyses</h2>
-
-          <div class="mb-8">
-            <form id="viewProjectsForm" class="mb-3">
-              <button type="submit" id="get_projects_button" class="btn btn-primary">View Projects</button>
-            </form>
-            
-            <div id="projects_display"></div>
-
-            <form id="viewFilesForm">
-              <div class="form-group">
-                <input type="text" class="form-control mb-2" id="projectName" placeholder="Enter Project Name">
-                <button type="submit" class="btn btn-primary">View Files In Above Project</button>
-              </div>
-            </form>
-          </div>
+        <div class="ml-auto">
+            {% if session.get('user_id') %}
+            <a class="btn btn-dark" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            {% else %}
+            <a class="btn btn-dark" href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            {% endif %}
         </div>
-  
-      
-          <!-- View Buttons below Analysis -->
-           <!-- Image -->
-           <div class="text-center mt-4">
-            <img src="images/chromosome_search.jpg" alt="ChromosomeImg" class="img-fluid" style="float:right;width:300px;height:400px;">
-          </div>
-        </div>
-      </div>
     </div>
+</nav>
+
+    <div class="container mt-4">
+        <div class="text-center mb-5">
+            <h1 class="page-title">BED File Analysis Tool</h1>
+            <p class="lead">Filter, select, and analyze your genomic BED files with our integrated browser</p>
+            <div class="rainbow-line mx-auto" style="max-width: 600px;"></div>
+        </div>
+
+        <div class="search-section">
+            <h2 class="section-title"><i class="fas fa-search"></i> Filters</h2>
+            <!-- Filters Section -->
+            <div class="filter-section mb-4">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="projectFilter" class="form-label">Project</label>
+                        <select class="form-select" id="projectFilter">
+                            <option value="">All Projects</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="studyFilter" class="form-label">Study</label>
+                        <select class="form-select" id="studyFilter">
+                            <option value="">All Studies</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="speciesFilter" class="form-label">Species</label>
+                        <select class="form-select" id="speciesFilter">
+                            <option value="">All Species</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="genomeFilter" class="form-label">Genome Release</label>
+                        <select class="form-select" id="genomeFilter">
+                            <option value="">All Genomes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected Files Info -->
+            <div class="alert alert-info mb-4">
+                <strong>Selected files:</strong> <span id="selectedFiles">None</span>
+            </div>
+
+            <!-- Files Table -->
+            <div class="table-responsive mb-4">
+                <table id="filesTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>File Name</th>
+                            <th>Project</th>
+                            <th>Study</th>
+                            <th>Size</th>
+                            <th>Upload Date</th>
+                            <th>Description</th>
+                            <th>Species</th>
+                            <th>Genome</th>
+                            <th>Experiment Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="card shadow p-4 mb-5" style="border-radius: 16px;">
+            <h4 class="mb-4" style="font-weight:700;color:#2c3e50;">
+                <i class="fas fa-tools" style="color:#3498db;margin-right:10px;"></i>BEDTools Analysis
+            </h4>
+            <div class="row align-items-center g-3">
+                <div class="col-md-4">
+                    <label for="bedtoolsCommand" class="form-label" style="font-weight:600;">BEDTools Command</label>
+                    <select class="form-select" id="bedtoolsCommand" style="border-radius:8px;">
+                        <option value="">Select a command...</option>
+                        <option value="intersect">intersect - Find overlapping regions</option>
+                        <option value="merge">merge - Combine overlapping/adjacent intervals</option>
+                        <option value="sort">sort - Sort BED files</option>
+                        <option value="closest">closest - Find nearest non-overlapping feature</option>
+                        <option value="coverage">coverage - Compute coverage of features</option>
+                        <option value="getfasta">getfasta - Extract sequences from a genome</option>
+                        <option value="subtract">subtract - Remove overlapping regions</option>
+                        <option value="map">map - Aggregate scores/values</option>
+                        <option value="bamtobed">bamtobed - Convert BAM to BED</option>
+                        <option value="window">window - Find overlaps within a window</option>
+                        <option value="jaccard">jaccard - Calculate similarity</option>
+                        <option value="multiinter">multiinter - Find regions covered by multiple files</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label for="commandText" class="form-label" style="font-weight:600;">Command Line</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background:#f8f9fa;font-family:monospace;">$</span>
+                        <input type="text" class="form-control command-box" id="commandText"
+                               style="font-family: 'Source Code Pro', monospace; background:#f8f9fa; border-radius:8px;"
+                               placeholder="bedtools subtract -a file1.bed -b file2.bed > output.bed">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-end">
+                <button id="runCommandBtn" class="btn btn-success" style="border-radius:8px;padding:10px 28px;font-weight:600;">
+                    <i class="fas fa-play me-2"></i>Run Analysis
+                </button>
+                <button id="saveCommandBtn" class="btn btn-primary" style="border-radius:8px;padding:10px 28px;font-weight:600;">
+                    <i class="fas fa-save me-2"></i>Save Command
+                </button>
+            </div>
+        </div>
+        <pre id="commandResult" class="mt-3" style="background:#f8f9fa; border-radius:8px; padding:1em;"></pre>
+        <div class="mt-3">
+            <button id="downloadResultBtn" class="btn btn-outline-primary" style="display:none;">
+                <i class="fas fa-download"></i> Download Result
+            </button>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     
     <script>
-       document.getElementById("get_projects_button").addEventListener("click", function () {
-    fetch("/get_projects")
-      .then(response => response.json())
-      .then(data => {
-        if (data.length === 0) {
-          document.getElementById("projects_display").innerHTML = "<p>No projects found.</p>";
-          return;
-        }
-
-        let table = `<table class="table table-bordered">
-                      <thead>
-                        <tr>${Object.keys(data[0]).map(key => `<th>${key}</th>`).join('')}</tr>
-                      </thead>
-                      <tbody>
-                        ${data.map(row => `<tr>${Object.values(row).map(val => `<td>${val}</td>`).join('')}</tr>`).join('')}
-                      </tbody>
-                    </table>`;
-        document.getElementById("projects_display").innerHTML = table;
-      })
-      .catch(error => {
-        console.error("Error fetching projects:", error);
-        document.getElementById("projects_display").innerHTML = "<p>Error loading projects.</p>";
-      });
-      
-  });
+        $(document).ready(function() {
+            let selectedFiles = [];
+            let currentStudyId = null;
+            let table;
+            let allProjects = [];
+            let allStudies = [];
+            let allFiles = [];
+            
+            // Initialize DataTable
+            function initializeTable(data) {
+                allFiles = data.files; // 保存所有文件对象
+                if ($.fn.DataTable.isDataTable('#filesTable')) {
+                    table.destroy();
+                }
+                table = $('#filesTable').DataTable({
+                    data: data.files,
+                    columns: [
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return `<input type="checkbox" class="file-checkbox" data-filename="${row.file_name}" data-study="${row.study_id}">`;
+                            },
+                            orderable: false
+                        },
+                        { data: 'file_name' },
+                        { data: 'project_name' },
+                        { data: 'study_name' },
+                        { data: 'file_size' },
+                        { data: 'upload_date' },
+                        { data: 'description' },
+                        { data: 'species' },
+                        { data: 'genome_release' },
+                        { data: 'experiment_type' }
+                    ],
+                    pageLength: 10,
+                    responsive: true
+                });
+            }
+            
+            // Load initial data
+            function loadData() {
+                $.get('/students_25/Team14/app_test/test3/test3/get_files', function(data) {
+                    allProjects = data.projects;
+                    allStudies = data.studies;
+                    populateProjectDropdown(allProjects);
+                    populateStudyDropdown(allStudies, '');
+                    populateDropdown('#speciesFilter', [...new Set(data.files.map(f => f.species))]);
+                    populateDropdown('#genomeFilter', [...new Set(data.files.map(f => f.genome_release))]);
+                    initializeTable(data);
+                }).fail(function() {
+                    alert('Error loading files');
+                });
+            }
+            
+            // Populate dropdown with options
+            function populateDropdown(selector, options) {
+                const dropdown = $(selector);
+                dropdown.empty();
+                dropdown.append('<option value="">All</option>');
+                options.forEach(option => {
+                    dropdown.append(`<option value="${option}">${option}</option>`);
+                });
+            }
+            
+            function populateProjectDropdown(projects) {
+                const dropdown = $('#projectFilter');
+                dropdown.empty();
+                dropdown.append('<option value="">All Projects</option>');
+                projects.forEach(p => {
+                    dropdown.append(`<option value="${p.project_id}">${p.project_name}</option>`);
+                });
+            }
+            
+            function populateStudyDropdown(studies, projectId) {
+                const dropdown = $('#studyFilter');
+                dropdown.empty();
+                dropdown.append('<option value="">All Studies</option>');
+                studies.filter(s => !projectId || s.project_id == projectId)
+                    .forEach(s => {
+                        dropdown.append(`<option value="${s.study_id}">${s.study_name}</option>`);
+                    });
+            }
+            
+            // Apply filters
+            function applyFilters() {
+                const project_id = $('#projectFilter').val();
+                const study_id = $('#studyFilter').val();
+                const species = $('#speciesFilter').val();
+                const genome = $('#genomeFilter').val();
+                
+                $.get('/students_25/Team14/app_test/test3/test3/get_files', {
+                    project_id, study_id, species, genome
+                }, function(data) {
+                    initializeTable(data);
+                }).fail(function() {
+                    alert('Error applying filters');
+                });
+            }
+            
+            // Handle file selection
+            $(document).on('change', '.file-checkbox', function() {
+                const filename = $(this).data('filename');
+                const studyId = $(this).data('study');
+                // 查找完整的文件对象
+                const fileObj = allFiles.find(f => f.file_name === filename && f.study_id == studyId);
+                if ($(this).is(':checked')) {
+                    if (currentStudyId && currentStudyId !== studyId) {
+                        $(this).prop('checked', false);
+                        alert('Please select files from the same study only.');
+                        return;
+                    }
+                    selectedFiles.push(fileObj); // 存完整对象
+                    currentStudyId = studyId;
+                } else {
+                    selectedFiles = selectedFiles.filter(f => f.file_name !== filename || f.study_id != studyId);
+                    if (selectedFiles.length === 0) {
+                        currentStudyId = null;
+                    }
+                }
+                updateSelectedFilesDisplay();
+                updateCommandPreview();
+            });
+            
+            // Update the selected files display
+            function updateSelectedFilesDisplay() {
+                const display = selectedFiles.length > 0 
+                    ? selectedFiles.map(f => f.file_name).join(', ') 
+                    : 'None';
+                $('#selectedFiles').text(display);
+            }
+            
+            // Handle BEDTools command selection
+            $('#bedtoolsCommand').change(function() {
+                updateCommandPreview();
+            });
+            
+            // Update command preview based on selected files and command
+            function updateCommandPreview() {
+                const command = $('#bedtoolsCommand').val();
+                if (!command || selectedFiles.length === 0) {
+                    $('#commandText').val('');
+                    return;
+                }
+                let cmd = `bedtools ${command}`;
+                switch(command) {
+                    case 'intersect':
+                        cmd += ` -a ${selectedFiles[0].file_path} -b ${selectedFiles.slice(1).map(f => f.file_path).join(' ')}`;
+                        break;
+                    case 'merge':
+                        cmd += ` -i ${selectedFiles.map(f => f.file_path).join(' ')}`;
+                        break;
+                    case 'sort':
+                        cmd += ` -i ${selectedFiles[0].file_path}`;
+                        break;
+                    case 'subtract':
+                        if (selectedFiles.length >= 2) {
+                            cmd += ` -a ${selectedFiles[0].file_path} -b ${selectedFiles[1].file_path}`;
+                        } else {
+                            cmd = 'Need at least 2 files for subtract';
+                        }
+                        break;
+                    case 'coverage':
+                        if (selectedFiles.length >= 2) {
+                            cmd += ` -a ${selectedFiles[0].file_path} -b ${selectedFiles[1].file_path}`;
+                        } else {
+                            cmd = 'Need at least 2 files for coverage';
+                        }
+                        break;
+                    default:
+                        cmd += ` ${selectedFiles.map(f => f.file_path).join(' ')}`;
+                }
+                $('#commandText').val(cmd);
+            }
+            
+            // Save command to backend
+            $('#saveCommandBtn').click(function() {
+                if (selectedFiles.length === 0) {
+                    alert('Please select at least one file');
+                    return;
+                }
+                
+                const command = $('#commandText').val();
+                if (!command) {
+                    alert('Please select a BEDTools command');
+                    return;
+                }
+                
+                $.post('/students_25/Team14/app_test/test3/test3/save_command', JSON.stringify({
+                    study_id: currentStudyId,
+                    filenames: selectedFiles.map(f => f.file_name),
+                    command: command
+                }), function() {
+                    alert('Command saved successfully!');
+                }).fail(function() {
+                    alert('Error saving command');
+                });
+            });
+            
+            // Filter change handlers
+            $('#projectFilter').change(function() {
+                const projectId = $(this).val();
+                populateStudyDropdown(allStudies, projectId);
+                applyFilters();
+            });
+            $('#studyFilter, #speciesFilter, #genomeFilter').change(applyFilters);
+            
+            // Render result table
+            function renderResultTable(output) {
+                if (!output) {
+                    $('#resultTableContainer').html('<div class="text-danger">No result to display.</div>');
+                    $('#downloadResultBtn').hide();
+                    return;
+                }
+                // Split by lines
+                const rows = output.trim().split('\n');
+                // Split each line by tab
+                const tableRows = rows.map(row => row.split('\t'));
+                // Generate HTML table
+                let html = '<table class="table table-bordered table-sm"><tbody>';
+                tableRows.forEach(cols => {
+                    html += '<tr>' + cols.map(col => `<td>${col}</td>`).join('') + '</tr>';
+                });
+                html += '</tbody></table>';
+                $('#resultTableContainer').html(html);
+                $('#downloadResultBtn').show();
+                // Save data for download
+                window._lastResultTable = tableRows;
+            }
+            
+            // Modify Run Analysis button event, render table on success
+            $('#runCommandBtn').click(function() {
+                const command = $('#commandText').val();
+                if (!command) {
+                    alert('Please select a BEDTools command');
+                    return;
+                }
+                $.ajax({
+                    url: '/students_25/Team14/app_test/test3/test3/run_bedtools',
+                    type: 'POST',
+                    data: JSON.stringify({ command: command }),
+                    contentType: "application/json",
+                    success: function(res) {
+                        $('#commandResult').text(res.output || 'No output');
+                        renderResultTable(res.output);
+                    },
+                    error: function(xhr) {
+                        $('#commandResult').text('Error: ' + (xhr.responseJSON?.error || 'Unknown error'));
+                        renderResultTable('');
+                    }
+                });
+            });
+            
+            // Download button event
+            $('#downloadResultBtn').click(function() {
+                const tableRows = window._lastResultTable;
+                if (!tableRows) return;
+                // Generate TSV content
+                const tsv = tableRows.map(row => row.join('\t')).join('\n');
+                const blob = new Blob([tsv], {type: 'text/tab-separated-values'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'bedtools_result.tsv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Initial load
+            loadData();
+        });
     </script>
-    <!-- JavaScript -->
-    <script src="bedtools-form.js"></script>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>

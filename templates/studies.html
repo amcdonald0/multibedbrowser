@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Projects and Studies - Multi-Bed Browser</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+        }
+        .navbar-brand .helix-icon {
+            color: #3498db;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .study-card {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #2ecc71;
+        }
+        .file-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+        .file-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            background: white;
+            display: flex;
+            align-items: center;
+        }
+        .file-icon {
+            color: #e74c3c;
+            margin-right: 10px;
+        }
+        .project-title {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .study-title {
+            color: #34495e;
+            font-weight: 500;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .badge-genomic {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home_page') }}"><i class="fas fa-home"></i> Home</a>
+            </li>
+            {% if user_urole in ['admin', 'user'] %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('upload_page') }}"><i class="fas fa-upload"></i> Upload</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_projects') }}"><i class="fas fa-folder"></i> View Files</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('search_page') }}"><i class="fas fa-search"></i> Search</a>
+            </li>
+            {% if user_urole == 'admin' %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('show_users') }}"><i class="fas fa-users"></i> Users</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('help_page') }}"><i class="fas fa-question-circle"></i> Help</a>
+            </li>
+        </ul>
+        <div class="ml-auto">
+            {% if session.get('user_id') %}
+            <a class="btn btn-dark" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            {% else %}
+            <a class="btn btn-dark" href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+    <div class="container mt-4">
+        <h1 class="mb-4"><i class="fas fa-project-diagram"></i> Projects and Studies</h1>
+        
+        {% for project in projects %}
+        <div class="project-card">
+            <div class="project-title">
+                <i class="fas fa-folder-open"></i> {{ project.project_name }}
+                <span class="badge badge-genomic">Project</span>
+            </div>
+            
+            {% for study in project.studies %}
+            <div class="study-card">
+                <div class="study-title">
+                    <i class="fas fa-microscope"></i> {{ study.study_name }}
+                    <span class="badge badge-genomic">Study</span>
+                </div>
+                {% if study.description %}
+                <div class="description">
+                    <i class="fas fa-info-circle"></i> {{ study.description }}
+                </div>
+                {% endif %}
+                
+                {% if study.files %}
+                <ul class="file-list">
+                    {% for file in study.files %}
+                    <li class="file-item">
+                        <i class="fas fa-file-alt file-icon"></i>
+                        {{ file.file_name }}
+                        {% if file.description %}
+                        <span class="description ml-2">- {{ file.description }}</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted"><i class="fas fa-info-circle"></i> No files in this study</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

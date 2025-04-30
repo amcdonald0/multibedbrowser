@@ -1,86 +1,209 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management - Multi-Bed Browser</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
-          crossorigin="anonymous">
-
-    <title>Users Table</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+        }
+        .navbar-brand .helix-icon {
+            color: #3498db;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+        .section-description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+        .table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .table thead th {
+            background-color: #f8f9fa;
+            border-top: none;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f9ff;
+        }
+        .badge-role {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        .badge-admin {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .badge-guest {
+            background-color: #3498db;
+            color: white;
+        }
+        .badge-user {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .alert {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="home.html">Multi-Bed Browser</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" 
-              data-target="#navbarNav" aria-controls="navbarNav" 
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="upload.html">Upload</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="search.html">Search</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="users.html">Users <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </div>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-dna helix-icon"></i> Multi-Bed Browser</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home_page') }}"><i class="fas fa-home"></i> Home</a>
+                </li>
+                {% if user_urole in ['admin', 'user'] %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('upload_page') }}"><i class="fas fa-upload"></i> Upload</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('show_projects') }}"><i class="fas fa-folder"></i> View Files</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('search_page') }}"><i class="fas fa-search"></i> Search</a>
+                </li>
+                {% if user_urole == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('show_users') }}"><i class="fas fa-users"></i> Users</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('help_page') }}"><i class="fas fa-question-circle"></i> Help</a>
+                </li>
+            </ul>
+            <div class="ml-auto">
+                {% if session.get('user_id') %}
+                <a class="btn btn-dark" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                {% else %}
+                <a class="btn btn-dark" href="{{ url_for('login') }}">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </nav>
 
     <div class="container mt-4">
-      <h1>Users Table</h1>
+        <!-- All Users Section -->
+        <div class="section-title">
+            <i class="fas fa-users"></i> System Users
+            {% if resultsAllUsers %}
+                <p class="section-description">{{ resultsAllUsers }}</p>
+            {% endif %}
+        </div>
 
-      {% if resultsAllUsers %}
-        <h3>Search Results:</h3>
-        <p>{{ resultsAllUsers }}</p>
-      {% endif %}
+        {% if results %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th><i class="fas fa-id-badge"></i> User ID</th>
+                            <th><i class="fas fa-user"></i> Username</th>
+                            <th><i class="fas fa-envelope"></i> Email</th>
+                            <th><i class="fas fa-user-tag"></i> Role</th>
+                            <th><i class="fas fa-project-diagram"></i> Project ID</th>
+                            <th><i class="fas fa-folder-open"></i> Project Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in results %}
+                            <tr>
+                                <td>{{ row[0] }}</td>
+                                <td>{{ row[1] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>
+                                    <span class="badge badge-role {% if row[3] == 'admin' %}badge-admin{% elif row[3] == 'guest' %}badge-guest{% else %}badge-user{% endif %}">
+                                        {{ row[3] }}
+                                    </span>
+                                </td>
+                                <td>{{ row[4] if row[4] else '-' }}</td>
+                                <td>{{ row[5] if row[5] else '-' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> No user data available.
+            </div>
+        {% endif %}
 
-      {% if results %}
-        <table class="table table-bordered table-hover">
-          <thead class="thead-light">
-            <tr>
-              <th>UserId</th>
-              <th>Username</th>
-              <th>Password</th>
-              <th>Email</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in results %}
-              <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p>No results found for the given criteria.</p>
-      {% endif %}
+        <!-- Guest Users Section -->
+        <div class="section-title mt-5">
+            <i class="fas fa-user-friends"></i> Guest Users
+        </div>
+
+        {% if guest_results %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th><i class="fas fa-id-badge"></i> User ID</th>
+                            <th><i class="fas fa-user"></i> Username</th>
+                            <th><i class="fas fa-envelope"></i> Email</th>
+                            <th><i class="fas fa-user-tag"></i> Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in guest_results %}
+                            <tr>
+                                <td>{{ row[0] }}</td>
+                                <td>{{ row[1] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>
+                                    <span class="badge badge-role badge-guest">{{ row[3] }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No guest users found.
+            </div>
+        {% endif %}
     </div>
-
+    
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" 
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
-            crossorigin="anonymous"></script>
-  </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+</body>
 </html>
