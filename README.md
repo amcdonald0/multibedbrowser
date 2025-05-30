@@ -91,3 +91,11 @@ We welcome community involvement. Please:
 - Add docstrings and comments for clarity
 
 - Open issues for suggestions, bugs, or improvements
+
+## Graphical Overview
+
+## Credit 
+
+##### Developers :  Aretha McDonald, Riya Jadhav, Yu Huang, and Zhanna Abdrassulova. 
+
+This program was created as part of a course in Spring 2025 in collaboration with Prof. David Waxman, Boston University. 

@@ -143,13 +143,13 @@ def register():
 
             # insert new user
             cur.execute("""
-                INSERT INTO Users (username, password, email, urole) 
+                INSERT INTO PendingUsers (username, password, email, urole) 
                 VALUES (%s, %s, %s, 'guest')
             """, (username, password, email))
             conn.commit()
 
             # get the ID of the newly inserted user
-            cur.execute("SELECT user_id FROM Users WHERE username = %s", (username,))
+            cur.execute("SELECT pending_id FROM PendingUsers WHERE username = %s", (username,))
             user_id = cur.fetchone()[0]
 
             # set session
