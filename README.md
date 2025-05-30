@@ -18,6 +18,13 @@ The Multi-Bed Browser provides a centralized, accessible environment for working
 
 - Role-based access (guest, user, admin)
 
+## Repo includes:
+
+- SQL script to create and populate database (multibed_scripts.sql)
+- HTML template files (/templates)
+- Project Description and setup instructions (README.md)
+- Main Flask App (test3.py)
+
 
 ## Features
 
@@ -46,3 +53,41 @@ The Multi-Bed Browser provides a centralized, accessible environment for working
 -  Role-based navigation and permissions
 
 
+#### Admin Tools
+- View all users
+
+- Add, edit, or delete user accounts
+
+- Approve or deny pending registrations
+
+#### Interface Highlights
+
+- Responsive Bootstrap UI
+
+- Datatables for file listing and filtering
+
+- Helpful guides and examples for users (help.html)
+
+
+## Setup Instructions
+
+You will need:
+
+1. a computer with an internet server (Apache or similar)
+2. to install mod_wsgi (works with Apache to serve flask programs)
+3. Python 3.7 +
+4. MariaDB 
+5. Bedtools installed on system path
+6. Flask + deendencies (requirements.txt)
+
+
+## Contribution Guidelines
+We welcome community involvement. Please:
+
+- Fork the repo and submit pull requests for new features or bug fixes
+
+- Follow best practices for Python and Flask development
+
+- Add docstrings and comments for clarity
+
+- Open issues for suggestions, bugs, or improvements
