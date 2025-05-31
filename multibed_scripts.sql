@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS Projects;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS users_in;
 
--- Create Table to Store File Data
-# Files Table 
+-- Creating files table
+
 CREATE TABLE Files (
 	file_id INTEGER NOT NULL AUTO_INCREMENT, 
 	file_name VARCHAR(255) NOT NULL, 
@@ -17,14 +17,17 @@ CREATE TABLE Files (
 	uploaded_by INTEGER NOT NULL, 
 	upload_date TIMESTAMP DEFAULT,
 	description TEXT,
-	study_id INTEGER, 
+	study_id INTEGER,
+	species TEXT NOT NULL,
+	genome_release VARCHAR(20) NOT NULL,
+	experiment_type TEXT,  
 	PRIMARY KEY (file_id),
 	FOREIGN KEY(uploaded_by) REFERENCES Users(user_id),
 	FOREIGN KEY(study_id) REFERENCES Studies(study_id)
 )ENGINE=InnoDB;
 
--- Create Table
-# Studies Table 
+-- Creating Studies Table
+
 CREATE TABLE Studies(
 	study_id INTEGER NOT NULL AUTO_INCREMENT, 
 	stduy_name VARCHAR(255) NOT NULL UNIQUE, 
@@ -34,8 +37,8 @@ CREATE TABLE Studies(
 	FOREIGN KEY(project_id) REFERENCES Projects(project_id)
 )ENGINE=InnoDB;
 
--- Create Table
-# Projects Table 
+-- Creating Projects Table
+
 CREATE TABLE Projects(
 	 project_id INTEGER NOT NULL auto_increment,
 	 project_name varchar(30),
@@ -43,8 +46,8 @@ CREATE TABLE Projects(
 	 PRIMARY KEY (project_id)
 )ENGINE = InnoDB;
 
--- Create Table
-# Users Table 
+-- Creating Users Table
+
 CREATE table Users(
 	 user_id INTEGER NOT NULL AUTO_INCREMENT,
 	 username INTEGER NOT NULL,
@@ -54,8 +57,8 @@ CREATE table Users(
 	 PRIMARY KEY(user_id)
 )ENGINE = InnoDB;
 
--- Create Table
-# Users_Projects Table (many-to-many)
+-- Creating User-Project Relationship Table (many-to-many)
+
 CREATE table users_in(
 	 user_id INTEGER NOT NULL,
 	 project_id INTEGER NOT NULL,
@@ -64,7 +67,7 @@ CREATE table users_in(
 	 FOREIGN KEY (project_id) REFERENCES Projects (project_id),
 )ENGINE = InnoDB;
 
--- Create table to store user information before registration approval
+-- Creating table to store user information before registration approval
 
 CREATE TABLE PendingUsers (
     pending_id INT AUTO_INCREMENT PRIMARY KEY,
