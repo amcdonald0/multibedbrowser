@@ -120,9 +120,9 @@ This program was created as part of a course in Spring 2025 in collaboration wit
 ![Search1](images/search1.png)
 ![Search2](images/search2.png)
 ![Search3](images/search3.png)
-![Search4](images/search4.png)
-![Search5](images/search5.png)
-![Search6](images/search6.png)
+![Search4](images/search4.jpg)
+![Search5](images/search5.jpg)
+![Search6](images/search6.jpg)
 
 #### Help.html
 ![Help1](images/help1.png)
