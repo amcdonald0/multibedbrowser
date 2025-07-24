@@ -129,7 +129,8 @@ This program was created as part of a course in Spring 2025 in collaboration wit
 ![Help2](images/help2.png)
 ![Help3](images/help3.png)
 
-#### Search.html
-![Search1](images/help1.png)
-![Search1](images/help2.png)
-![Search1](images/help3.png)
+#### View.html
+![View](images/view.png)
+
+#### Users.html
+![Users](images/users.png)
