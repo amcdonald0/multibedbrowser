@@ -100,6 +100,36 @@ We welcome community involvement. Please:
 
 This program was created as part of a course in Spring 2025 in collaboration with Prof. David Waxman, Boston University. 
 
-How Your Interface Should Look: 
+## How Your Interface Should Look: 
 
 #### Login.html
+![Login](images/login.png)
+
+
+#### Home.html
+![Home1](images/home1.png)
+![Home2](images/home2.png)
+![Home3](images/home3.png)
+
+#### Upload.html
+![Upload1](images/upload1.png)
+![Upload2](images/upload2.png)
+![Upload3](images/upload3.png)
+
+#### Search.html
+![Search1](images/search1.png)
+![Search2](images/search2.png)
+![Search3](images/search3.png)
+![Search4](images/search4.png)
+![Search5](images/search5.png)
+![Search6](images/search6.png)
+
+#### Help.html
+![Help1](images/help1.png)
+![Help2](images/help2.png)
+![Help3](images/help3.png)
+
+#### Search.html
+![Search1](images/help1.png)
+![Search1](images/help2.png)
+![Search1](images/help3.png)
