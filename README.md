@@ -78,7 +78,7 @@ You will need:
 3. Python 3.7 +
 4. MariaDB 
 5. Bedtools installed on system path
-6. Flask + deendencies (requirements.txt)
+6. Flask + dependencies (requirements.txt)
 
 
 ## Contribution Guidelines
@@ -99,3 +99,7 @@ We welcome community involvement. Please:
 ##### Developers :  Aretha McDonald, Riya Jadhav, Yu Huang, and Zhanna Abdrassulova. 
 
 This program was created as part of a course in Spring 2025 in collaboration with Prof. David Waxman, Boston University. 
+
+How Your Interface Should Look: 
+
+#### Login.html
